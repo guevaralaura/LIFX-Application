@@ -75,7 +75,7 @@ public class HomeController implements Initializable{
 
     @FXML
     void handleSettings(ActionEvent event) {
-    	settingsBtn.setStyle("fx-shape: M239.4,136.001c-57,0-103.3,46.3-103.3,103.3s46.3,103.3,103.3,103.3s103.3-46.3,103.3-103.3S296.4,136.001,239.4,136.001z M239.4,315.601c-42.1,0-76.3-34.2-76.3-76.3s34.2-76.3,76.3-76.3s76.3,34.2,76.3,76.3S281.5,315.601,239.4,315.601z;");}
+    	}
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     	lightPic.setOpacity(0.2);

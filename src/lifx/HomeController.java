@@ -52,19 +52,19 @@ public class HomeController implements Initializable{
 
     @FXML
     void handleColorPicker(ActionEvent event) {
-    	lightOneClr.setStroke(colorPicker.getValue());
+    		lightOneClr.setStroke(colorPicker.getValue());
     }
     
     boolean on = false;
     @FXML
     void handleLight(ActionEvent event) {
-    	if(!on){
-    		lightPic.setOpacity(1);
-    		on = true;
-    	}else{
-    		lightPic.setOpacity(0.2);
-    		on = false;
-    	}
+	    	if(!on){
+	    		lightPic.setOpacity(1);
+	    		on = true;
+	    	}else{
+	    		lightPic.setOpacity(0.2);
+	    		on = false;
+	    	}
     }
 
     @FXML
@@ -73,12 +73,14 @@ public class HomeController implements Initializable{
     	
     }
 
+    
     @FXML
     void handleSettings(ActionEvent event) {
     	}
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	lightPic.setOpacity(0.2);
+    		lightPic.setOpacity(0.2);
     }
 
 }

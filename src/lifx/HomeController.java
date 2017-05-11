@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
-
+import lifx.LightFunctions;
 
 public class HomeController implements Initializable{
 	@FXML
@@ -61,10 +61,13 @@ public class HomeController implements Initializable{
 	    	if(!on){
 	    		lightPic.setOpacity(1);
 	    		on = true;
+	    		LightFunctions.turnon();
 	    	}else{
 	    		lightPic.setOpacity(0.2);
 	    		on = false;
+	    		LightFunctions.turnoff();
 	    	}
+	    	System.out.println("Hello World!!");
     }
 
     @FXML

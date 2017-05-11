@@ -9,6 +9,12 @@ import java.net.URL;
 
 public class LightFunctions {
 
+	public static void setColour(String hexColour){
+		String colorData = "#" + hexColour;
+		String command = "color=" + colorData;
+		sendData(command);
+	}
+	
 	public static void turnon() {
 		String command = "power=on";
 		sendData(command);

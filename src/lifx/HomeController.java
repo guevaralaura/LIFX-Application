@@ -53,6 +53,11 @@ public class HomeController implements Initializable{
     @FXML
     void handleColorPicker(ActionEvent event) {
     		lightOneClr.setStroke(colorPicker.getValue());
+    		StringBuilder sb = new StringBuilder(colorPicker.getValue().toString());
+    		//Remove "0x" and "ff" from front and end of color string
+    		sb.deleteCharAt(9); sb.deleteCharAt(8); sb.deleteCharAt(1); sb.deleteCharAt(0);
+    		LightFunctions.setColour(sb.toString());
+    		
     }
     
     boolean on = false;

@@ -13,8 +13,9 @@ import javafx.scene.AmbientLight;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-
+import lifx.LightFunctions;
 
 public class HomeController implements Initializable{
 	@FXML
@@ -52,33 +53,68 @@ public class HomeController implements Initializable{
 
     @FXML
     void handleColorPicker(ActionEvent event) {
-    	lightOneClr.setStroke(colorPicker.getValue());
+    	System.out.println(colorPicker.getValue());
+    		lightOneClr.setStroke(colorPicker.getValue());
+			if(colorPicker.getValue().toString().equals("0x000000ff")){
+	    		lightPic.setOpacity(0.2);
+	    		on = false;
+	    		LightFunctions.turnoff();
+    		}else{
+    			LightFunctions.setColour(parseHexColor(colorPicker.getValue().toString()));
+    		}
+    }
+    
+    String parseHexColor(String original){
+		StringBuilder sb = new StringBuilder(original);
+		//Remove "0x" and "ff" from front and end of color string
+		sb.deleteCharAt(9); sb.deleteCharAt(8); sb.deleteCharAt(1); sb.deleteCharAt(0);
+		//System.out.println(sb.toString());
+		return sb.toString();
     }
     
     boolean on = false;
     @FXML
     void handleLight(ActionEvent event) {
-    	if(!on){
-    		lightPic.setOpacity(1);
-    		on = true;
-    	}else{
-    		lightPic.setOpacity(0.2);
-    		on = false;
-    	}
+	    	if(!on){
+	    		lightPic.setOpacity(1);
+	    		on = true;
+	    		LightFunctions.turnon();
+	    	}else{
+	    		lightPic.setOpacity(0.2);
+	    		on = false;
+	    		LightFunctions.turnoff();
+	    	}
+	    //	System.out.println("Hello World!!");
     }
 
     @FXML
     void handleScene(ActionEvent event) {
     	//set light to getcolor of circle
+    	String[] arr = event.getSource().toString().split(", ");
+    	String id = arr[0].substring(10);
     	
+    	if(id.equalsIgnoreCase("sceneone")){
+    		LightFunctions.setColour(parseHexColor(sceneOneClr.getFill().toString()));
+    	}else if(id.equalsIgnoreCase("scenetwo")){
+    		LightFunctions.setColour(parseHexColor(sceneTwoClr.getFill().toString()));
+    	}else{
+    		LightFunctions.setColour(parseHexColor(sceneThreeClr.getFill().toString()));
+    	}
     }
 
+    
     @FXML
     void handleSettings(ActionEvent event) {
+    	
+    //ad sign in for lifx and get key
     	}
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	lightPic.setOpacity(0.2);
+    		lightPic.setOpacity(0.2);
+    		//add getters for colors and if light is on or off, set bulb opacity according to on/off
+    		//set colorpicker to current color of lifx with getters and setters
+    		
     }
 
 }

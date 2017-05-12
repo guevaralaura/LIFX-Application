@@ -15,7 +15,7 @@ public class Main extends Application {
 	private static Stage pStage;
 	private static VBox root;
 
-	@Override
+	@Override 
 	public void start(Stage primaryStage) {
 		try {
 			root = FXMLLoader.load(getClass().getClassLoader().getResource("lifx/UI.fxml"));

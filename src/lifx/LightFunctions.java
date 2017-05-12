@@ -46,6 +46,7 @@ public class LightFunctions {
 	private static HttpURLConnection createConnectionPut(){
 		HttpURLConnection connection = null;
 		try {
+			//ryans key 
 			String authStr = "c8a6bd4449506916025d6b4e924e672e3b898af8520d2ddbe5ab075ff8d737e9";
 			URL url = new URL ("https://api.lifx.com/v1/lights/all/state");
 			

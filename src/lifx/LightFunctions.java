@@ -36,6 +36,7 @@ public class LightFunctions {
 			if(val.startsWith("\"") && val.endsWith("\"")){
 				val = val.substring(1, val.length()-1);
 			}
+			//add else if for groups so things that start and end with { }
 			t.put(key, val);
 		}
 		System.out.println(t);

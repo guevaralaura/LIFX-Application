@@ -127,7 +127,7 @@ public class HomeController implements Initializable{
 			on = true;
 		}else{
 			lightPic.setOpacity(0.2);
-			on = true;
+			on = false;
 		}
    		//set colorpicker to current color of lifx with getters and setters
     		

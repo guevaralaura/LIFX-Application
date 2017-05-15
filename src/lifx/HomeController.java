@@ -112,6 +112,7 @@ public class HomeController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
     		lightPic.setOpacity(0.2);
+    		LightFunctions.getInfo();
     		//add getters for colors and if light is on or off, set bulb opacity according to on/off
     		//set colorpicker to current color of lifx with getters and setters
     		

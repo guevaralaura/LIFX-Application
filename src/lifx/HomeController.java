@@ -54,14 +54,14 @@ public class HomeController implements Initializable{
     @FXML
     void handleColorPicker(ActionEvent event) {
     	System.out.println(colorPicker.getValue());
-    		lightOneClr.setStroke(colorPicker.getValue());
-			if(colorPicker.getValue().toString().equals("0x000000ff")){
-	    		lightPic.setOpacity(0.2);
-	    		on = false;
-	    		LightFunctions.turnoff();
-    		}else{
-    			LightFunctions.setColour(parseHexColor(colorPicker.getValue().toString()));
-    		}
+		lightOneClr.setStroke(colorPicker.getValue());
+		if(colorPicker.getValue().toString().equals("0x000000ff")){
+    		lightPic.setOpacity(0.2);
+    		on = false;
+    		LightFunctions.turnoff();
+		}else{
+			LightFunctions.setColour(parseHexColor(colorPicker.getValue().toString()));
+		}
     }
     
     String parseHexColor(String original){
@@ -75,15 +75,15 @@ public class HomeController implements Initializable{
     boolean on = false;
     @FXML
     void handleLight(ActionEvent event) {
-	    	if(!on){
-	    		lightPic.setOpacity(1);
-	    		on = true;
-	    		LightFunctions.turnon();
-	    	}else{
-	    		lightPic.setOpacity(0.2);
-	    		on = false;
-	    		LightFunctions.turnoff();
-	    	}
+		if(!on){
+			lightPic.setOpacity(1);
+			on = true;
+			LightFunctions.turnon();
+		}else{
+			lightPic.setOpacity(0.2);
+			on = false;
+			LightFunctions.turnoff();
+		}
 	    //	System.out.println("Hello World!!");
     }
 

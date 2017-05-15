@@ -6,11 +6,16 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
-import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+
+
 
 public class LightFunctions {
 	private static String token = "c8a6bd4449506916025d6b4e924e672e3b898af8520d2ddbe5ab075ff8d737e9";
@@ -18,10 +23,23 @@ public class LightFunctions {
 	public static int getInfo(){
 		String Lifxdata = listLights("all");
 		System.out.println(Lifxdata);
-		/*JsonElement response = new JsonParser().parse(Lifxdata);
-		JsonObject lifxObject = response.getAsJsonObject();
+		JsonElement response = new JsonParser().parse(Lifxdata);
+		JsonArray a = response.getAsJsonArray();
+		Iterator<Entry<String, JsonElement>> o = a.get(0).getAsJsonObject().entrySet().iterator();
+		TreeMap<String, JsonElement> t = new TreeMap<String, JsonElement>();
+		
+		while(o.hasNext()){
+			Entry<String, JsonElement> element = o.next();
+			t.put(element.getKey(), element.getValue());
+			
+		}
+		System.out.println(t.get("power"));
+	
+		
+		/*		JsonObject lifxObject = response.getAsJsonObject();
 		String result = lifxObject.get("power").toString();
 		System.out.println(result);*/
+
 		return 0;
 	}
 	

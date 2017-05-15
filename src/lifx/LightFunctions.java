@@ -14,39 +14,35 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
-
-
-
 public class LightFunctions {
 	private static String token = "c8a6bd4449506916025d6b4e924e672e3b898af8520d2ddbe5ab075ff8d737e9";
-	public TreeMap<String, String> jsonData = getInfo();
 	
 	public static TreeMap<String, String>  getInfo(){
-		String Lifxdata = listLights("all");
-		System.out.println(Lifxdata);
-		JsonElement response = new JsonParser().parse(Lifxdata);
-		JsonArray a = response.getAsJsonArray();
-		Iterator<Entry<String, JsonElement>> o = a.get(0).getAsJsonObject().entrySet().iterator();
-		TreeMap<String, String> t = new TreeMap<String, String>();
+		String lifxData = listLights("all");
+		//System.out.println(lifxData);
+		JsonElement response = new JsonParser().parse(lifxData);
+		JsonArray arr = response.getAsJsonArray();
+		Iterator<Entry<String, JsonElement>> iterator = arr.get(0).getAsJsonObject().entrySet().iterator();
+		TreeMap<String, String> map = new TreeMap<String, String>();
 		
-		while(o.hasNext()){
-			Entry<String, JsonElement> element = o.next();
+		while(iterator.hasNext()){
+			Entry<String, JsonElement> element = iterator.next();
 			String key = element.getKey();
 			String val = element.getValue().toString();
+			//splits string to get rid of quotation marks
 			if(val.startsWith("\"") && val.endsWith("\"")){
 				val = val.substring(1, val.length()-1);
 			}
-			//add else if for groups so things that start and end with { }
-			t.put(key, val);
+			map.put(key, val);
 		}
-		System.out.println(t);
+		System.out.println(map);
 	
 		
 		/*		JsonObject lifxObject = response.getAsJsonObject();
 		String result = lifxObject.get("power").toString();
 		System.out.println(result);*/
 
-		return t;
+		return map;
 	}
 	
 	public static void setColour(String hexColour){

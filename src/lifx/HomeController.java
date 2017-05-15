@@ -14,6 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import lifx.LightFunctions;
 
@@ -54,8 +55,6 @@ public class HomeController implements Initializable{
     
     @FXML
     private ImageView lightPic;
-
-    public static TreeMap<String, String> jsonData = LightFunctions.getInfo();
     
     @FXML
     void handleColorPicker(ActionEvent event) {
@@ -96,12 +95,19 @@ public class HomeController implements Initializable{
     	String id = arr[0].substring(10);
     	
     	if(id.equalsIgnoreCase("sceneone")){
-    		LightFunctions.setColour(parseHexColor(sceneOneClr.getFill().toString()));
+    		//LightFunctions.setColour(parseHexColor(sceneOneClr.getFill().toString()));
+    		colorPicker.setValue((Color) sceneOneClr.getFill());
+    		colorPicker.fireEvent(event);
     	}else if(id.equalsIgnoreCase("scenetwo")){
-    		LightFunctions.setColour(parseHexColor(sceneTwoClr.getFill().toString()));
+    		//LightFunctions.setColour(parseHexColor(sceneTwoClr.getFill().toString()));
+    		colorPicker.setValue((Color) sceneTwoClr.getFill());
+    		colorPicker.fireEvent(event);
     	}else{
-    		LightFunctions.setColour(parseHexColor(sceneThreeClr.getFill().toString()));
+    		//LightFunctions.setColour(parseHexColor(sceneThreeClr.getFill().toString()));
+    		colorPicker.setValue((Color) sceneThreeClr.getFill());
+    		colorPicker.fireEvent(event);
     	}
+    	
     }
 
     
@@ -119,7 +125,7 @@ public class HomeController implements Initializable{
 			connection.setContentText("Lifx could not be found.");
 			connection.showAndWait();
 		}*/
-		
+    	TreeMap<String, String> jsonData = LightFunctions.getInfo();
     	//check if light is on or off
     	System.out.println(jsonData.get("power"));
 		if (jsonData.get("power").equalsIgnoreCase("on")){
@@ -129,6 +135,8 @@ public class HomeController implements Initializable{
 			lightPic.setOpacity(0.2);
 			on = false;
 		}
+		
+		
    		//set colorpicker to current color of lifx with getters and setters
     		
     }

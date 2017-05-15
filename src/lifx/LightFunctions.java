@@ -92,6 +92,11 @@ public class LightFunctions {
 		}
 		
 		System.out.println(responseCode);
+		
+
+	    TreeMap<String, String> jsonData = getInfo();
+		System.out.println("power: "+jsonData.get("power"));
+		System.out.println("color: "+jsonData.get("color"));
 		return responseCode;
 	}
 	

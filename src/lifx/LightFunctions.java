@@ -52,16 +52,24 @@ public class LightFunctions {
 		int responseCode = setState(command);
 	}
 	
-	public static void turnon() {
+	public static void turnOn() {
 		//"power" uses put request
 		String command = "power=on";
 		int responseCode = setState(command);
 	}
 	
-	public static void turnoff() {
+	public static void turnOff() {
 		//"power" uses put request
 		String command = "power=off";
 		int responseCode = setState(command);
+	}
+	
+	public static boolean isOn(){
+		TreeMap<String, String> jsonData = LightFunctions.getInfo();
+		if (jsonData.get("power").equalsIgnoreCase("on")){
+			return true;
+		}		
+		return false;
 	}
 	
 	private static int setState(String data){

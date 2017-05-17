@@ -62,7 +62,7 @@ public class HomeController implements Initializable{
 		if(colorPicker.getValue().toString().equals("0x000000ff")){
     		lightPic.setOpacity(0.2);
     		on = false;
-    		LightFunctions.turnoff();
+    		LightFunctions.turnOff();
 		}else{
 			LightFunctions.setColour(parseHexColor(colorPicker.getValue().toString()));
 		}
@@ -81,11 +81,11 @@ public class HomeController implements Initializable{
 		if(!on){
 			lightPic.setOpacity(1);
 			on = true;
-			LightFunctions.turnon();
+			LightFunctions.turnOn();
 		}else{
 			lightPic.setOpacity(0.2);
 			on = false;
-			LightFunctions.turnoff();
+			LightFunctions.turnOff();
 		}
     }
 
@@ -125,10 +125,8 @@ public class HomeController implements Initializable{
 			connection.setContentText("Lifx could not be found.");
 			connection.showAndWait();
 		}*/
-    	TreeMap<String, String> jsonData = LightFunctions.getInfo();
     	//check if light is on or off
-    	System.out.println(jsonData.get("power"));
-		if (jsonData.get("power").equalsIgnoreCase("on")){
+		if (LightFunctions.isOn()){
 			lightPic.setOpacity(1);
 			on = true;
 		}else{

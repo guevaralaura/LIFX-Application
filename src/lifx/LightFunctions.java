@@ -16,6 +16,11 @@ import com.google.gson.JsonParser;
 
 public class LightFunctions {
 	private static String token = "c8a6bd4449506916025d6b4e924e672e3b898af8520d2ddbe5ab075ff8d737e9";
+	private static TreeMap<String, String> map;
+	
+	public LightFunctions(){
+		map = getInfo();
+	}
 	
 	public static TreeMap<String, String>  getInfo(){
 		String lifxData = listLights("all");

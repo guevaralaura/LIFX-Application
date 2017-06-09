@@ -20,6 +20,7 @@ public class LightFunctions {
 	
 	public LightFunctions(){
 		map = getInfo();
+		map.get("location");
 	}
 	
 	public static TreeMap<String, String>  getInfo(){

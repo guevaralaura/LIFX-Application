@@ -2,20 +2,22 @@ package lifx;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
+
 
 import javafx.event.ActionEvent;
 
-//import com.jfoenix.controls.JFXColorPicker;
+import com.jfoenix.controls.JFXColorPicker;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.AmbientLight;
 import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import lifx.LightFunctions;
+
 
 public class HomeController implements Initializable{
 	@FXML
@@ -26,6 +28,9 @@ public class HomeController implements Initializable{
 
     @FXML
     private ColorPicker colorPicker;
+    
+    @FXML
+    private JFXColorPicker clrPicker;
 
     @FXML
     private Circle sceneTwoClr;
@@ -50,70 +55,87 @@ public class HomeController implements Initializable{
     
     @FXML
     private ImageView lightPic;
-
+    
     @FXML
     void handleColorPicker(ActionEvent event) {
-    	System.out.println(colorPicker.getValue());
-    		lightOneClr.setStroke(colorPicker.getValue());
-			if(colorPicker.getValue().toString().equals("0x000000ff")){
-	    		lightPic.setOpacity(0.2);
-	    		on = false;
-	    		LightFunctions.turnoff();
-    		}else{
-    			LightFunctions.setColour(parseHexColor(colorPicker.getValue().toString()));
-    		}
+		lightOneClr.setStroke(colorPicker.getValue());
+		if(colorPicker.getValue().toString().equals("0x000000ff")){
+    		lightPic.setOpacity(0.2);
+    		on = false;
+    		LightFunctions.turnOff();
+		}else{
+			LightFunctions.setColour(parseHexColor(colorPicker.getValue().toString()));
+		}
     }
     
     String parseHexColor(String original){
 		StringBuilder sb = new StringBuilder(original);
 		//Remove "0x" and "ff" from front and end of color string
 		sb.deleteCharAt(9); sb.deleteCharAt(8); sb.deleteCharAt(1); sb.deleteCharAt(0);
-		//System.out.println(sb.toString());
 		return sb.toString();
     }
     
     boolean on = false;
     @FXML
     void handleLight(ActionEvent event) {
-	    	if(!on){
-	    		lightPic.setOpacity(1);
-	    		on = true;
-	    		LightFunctions.turnon();
-	    	}else{
-	    		lightPic.setOpacity(0.2);
-	    		on = false;
-	    		LightFunctions.turnoff();
-	    	}
-	    //	System.out.println("Hello World!!");
+		if(!on){
+			lightPic.setOpacity(1);
+			on = true;
+			LightFunctions.turnOn();
+		}else{
+			lightPic.setOpacity(0.2);
+			on = false;
+			LightFunctions.turnOff();
+		}
     }
 
     @FXML
     void handleScene(ActionEvent event) {
-    	//set light to getcolor of circle
     	String[] arr = event.getSource().toString().split(", ");
     	String id = arr[0].substring(10);
     	
     	if(id.equalsIgnoreCase("sceneone")){
-    		LightFunctions.setColour(parseHexColor(sceneOneClr.getFill().toString()));
+    		//LightFunctions.setColour(parseHexColor(sceneOneClr.getFill().toString()));
+    		colorPicker.setValue((Color) sceneOneClr.getFill());
+    		colorPicker.fireEvent(event);
     	}else if(id.equalsIgnoreCase("scenetwo")){
-    		LightFunctions.setColour(parseHexColor(sceneTwoClr.getFill().toString()));
+    		//LightFunctions.setColour(parseHexColor(sceneTwoClr.getFill().toString()));
+    		colorPicker.setValue((Color) sceneTwoClr.getFill());
+    		colorPicker.fireEvent(event);
     	}else{
-    		LightFunctions.setColour(parseHexColor(sceneThreeClr.getFill().toString()));
+    		//LightFunctions.setColour(parseHexColor(sceneThreeClr.getFill().toString()));
+    		colorPicker.setValue((Color) sceneThreeClr.getFill());
+    		colorPicker.fireEvent(event);
     	}
+    	
     }
 
     
     @FXML
     void handleSettings(ActionEvent event) {
-    	
-    //ad sign in for lifx and get key
-    	}
+    	//ad sign in for lifx and get key
+    }
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    		lightPic.setOpacity(0.2);
-    		//add getters for colors and if light is on or off, set bulb opacity according to on/off
-    		//set colorpicker to current color of lifx with getters and setters
+    	//check if light is connected
+/*		if (!jsonData.get("connected").equalsIgnoreCase("true")){
+			Alert connection = new Alert(AlertType.ERROR);
+			connection.setTitle("Connection Error");
+			connection.setContentText("Lifx could not be found.");
+			connection.showAndWait();
+		}*/
+    	//check if light is on or off
+		if (LightFunctions.isOn()){
+			lightPic.setOpacity(1);
+			on = true;
+		}else{
+			lightPic.setOpacity(0.2);
+			on = false;
+		}
+		
+		
+   		//set colorpicker to current color of lifx with getters and setters
     		
     }
 

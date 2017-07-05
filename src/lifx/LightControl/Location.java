@@ -1,6 +1,9 @@
 package lifx.LightControl;
 
 import lifx.LightFunctions;
+import lifx.LightControl.*;
+
+import java.util.ArrayList;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -10,25 +13,60 @@ import com.google.gson.JsonParser;
 public class Location {
 	//Location class will house Group class and allow controls to entire location
 	private String id;
-	private String label;
+	private String name;
+	private Group[] groups;
+	private int numLights;
+	private int numGroups;
 	
-	public Location(String idIn, String labelIn){
+	public Location(String idIn, String nameIn){
 		//Remove quotation marks from strings
 		if(idIn.startsWith("\"") && idIn.endsWith("\"")) idIn = idIn.substring(1, idIn.length()-1);
-		if(labelIn.startsWith("\"") && labelIn.endsWith("\"")) labelIn = labelIn.substring(1, labelIn.length()-1);
+		if(nameIn.startsWith("\"") && nameIn.endsWith("\"")) nameIn = nameIn.substring(1, nameIn.length()-1);
 		id = idIn;
-		label = labelIn;
+		name = nameIn;
 		
 		String lifxLocationString = LightFunctions.listLights("location_id:" + id);
 		System.out.println(lifxLocationString);
 		
-		//JsonElement lifxLocationElement = new JsonParser().parse(lifxLocationString);
 		
+		Location[] lls = new Location[5];
+		JsonElement lifxJsonElement = new JsonParser().parse(lifxLocationString); //Holds everything
+		JsonArray lightArray = lifxJsonElement.getAsJsonArray(); //Also everything
+		//Lifx Json returns an array with each individual light in it
 		
+		//Put group objects in an ArrayList for first time (because dynamic)
+		ArrayList groupList = new ArrayList(); //Contains type lifx.LightControl.group for each location
+		JsonObject lightObject;
+		JsonObject lightLocation;
+		String currentId = "pp";
 		
+		int cont = 0;
 		
-		
-		System.out.println("Added " + getId());
+		numLights = lightArray.size(); //Number of lights in location
+		//Go through each light, find its location, and create that location as an object
+		for (int i = 0; i < numLights; i++){
+			
+			lightObject = lightArray.get(i).getAsJsonObject();
+			lightLocation = lightObject.get("group").getAsJsonObject();
+			currentId = lightLocation.get("id").toString();
+			
+			int locationListSize = groupList.size();
+			for (int j = 0; j < locationListSize; j++)
+				//If location is already accounted for then 
+				if (currentId.equals(((Group) groupList.get(j)).getId())) { 
+					cont = 1;
+					break;
+				}
+			if (cont == 1) continue;
+			
+			Group currentGroup = new Group(currentId,lightLocation.get("name").toString());
+			groupList.add(currentGroup);
+		}
+		numGroups = groupList.size();
+		groups = new Group[groupList.size()];
+		//Put ArrayList into array. Efficiency?
+		for (int i = 0; i < groupList.size(); i++) groups[i] = (Group) groupList.get(i);
+		System.out.println("Added location: " + name);
 	}
 
 	public void turnOn(){
@@ -43,7 +81,7 @@ public class Location {
 		return id;
 	}
 	
-	public String getLabel(){
-		return label;
+	public String getName(){
+		return name;
 	}
 }

@@ -24,11 +24,10 @@ public class LightFunctions {
 	private static TreeMap<String, String> map;
 	private Location[] locations;
 	public int numLocations;
-	
+	public int numLights;
 	
 	public LightFunctions(){
 		String lifxDataString = listLights("all");
-		Location[] lls = new Location[5];
 		JsonElement lifxJsonElement = new JsonParser().parse(lifxDataString); //Holds everything
 		JsonArray lightArray = lifxJsonElement.getAsJsonArray(); //Also everything
 		//Lifx Json returns an array with each individual light in it
@@ -41,7 +40,7 @@ public class LightFunctions {
 		
 		int cont = 0;
 		
-		int numLights = lightArray.size(); //Number of lights on account
+		numLights = lightArray.size(); //Number of lights on account
 		//Go through each light, find its location, and create that location as an object
 		for (int i = 0; i < numLights; i++){
 			

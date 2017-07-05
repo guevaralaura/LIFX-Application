@@ -14,9 +14,9 @@ public class Location {
 	//Location class will house Group class and allow controls to entire location
 	private String id;
 	private String name;
-	private Group[] groups;
-	private int numLights;
-	private int numGroups;
+	public Group[] groups;
+	public int numLights;
+	public int numGroups;
 	
 	public Location(String idIn, String nameIn){
 		//Remove quotation marks from strings

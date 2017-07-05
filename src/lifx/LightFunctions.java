@@ -22,7 +22,7 @@ public class LightFunctions {
 	//private static String token = "c8a6bd4449506916025d6b4e924e672e3b898af8520d2ddbe5ab075ff8d737e9";
 	private static String token = "cd0ed572badca8064cbdb078695975aa730217c5c8ec578e65e639df50d585c8"; //Laura
 	private static TreeMap<String, String> map;
-	private Location[] locations;
+	public Location[] locations;
 	public int numLocations;
 	public int numLights;
 	

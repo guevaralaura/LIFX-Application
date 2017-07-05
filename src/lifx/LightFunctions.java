@@ -6,21 +6,65 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import lifx.LightControl.*;
+
 public class LightFunctions {
-	private static String token = "c8a6bd4449506916025d6b4e924e672e3b898af8520d2ddbe5ab075ff8d737e9";
+	//private static String token = "c8a6bd4449506916025d6b4e924e672e3b898af8520d2ddbe5ab075ff8d737e9";
+	private static String token = "cd0ed572badca8064cbdb078695975aa730217c5c8ec578e65e639df50d585c8"; //Laura
 	private static TreeMap<String, String> map;
+	private Location[] locations;
+	public int numLocations;
+	
 	
 	public LightFunctions(){
-		map = getInfo();
-		map.get("location");
+		String lifxDataString = listLights("all");
+		Location[] lls = new Location[5];
+		JsonElement lifxJsonElement = new JsonParser().parse(lifxDataString); //Holds everything
+		JsonArray lightArray = lifxJsonElement.getAsJsonArray(); //Also everything
+		//Lifx Json returns an array with each individual light in it
+		
+		//Put location objects in an ArrayList for first time (because dynamic)
+		ArrayList locationList = new ArrayList(); //Contains type lifx.LightControl.Location for each location
+		JsonObject lightObject;
+		JsonObject lightLocation;
+		String currentId = "pp";
+		
+		int cont = 0;
+		
+		int numLights = lightArray.size(); //Number of lights on account
+		//Go through each light, find its location, and create that location as an object
+		for (int i = 0; i < numLights; i++){
+			
+			lightObject = lightArray.get(i).getAsJsonObject();
+			lightLocation = lightObject.get("location").getAsJsonObject();
+			currentId = lightLocation.get("id").toString();
+			
+			int locationListSize = locationList.size();
+			for (int j = 0; j < locationListSize; j++)
+				//If location is already accounted for then 
+				if (currentId.equals(((Location) locationList.get(j)).getId())) { 
+					cont = 1;
+					break;
+				}
+			if (cont == 1) continue;
+			
+			Location currentLocation = new Location(currentId,lightLocation.get("name").toString());
+			locationList.add(currentLocation);
+		}
+		numLocations = locationList.size();
+		locations = new Location[locationList.size()];
+		//Put ArrayList into array. Efficiency?
+		for (int i = 0; i < locationList.size(); i++) locations[i] = (Location) locationList.get(i);
 	}
 	
 	public static TreeMap<String, String>  getInfo(){
@@ -55,21 +99,28 @@ public class LightFunctions {
 		//"color" uses put request
 		String colorData = "#" + hexColour;
 		String command = "color=" + colorData;
-		int responseCode = setState(command);
+		int responseCode = setState("all", command);
 	}
 	
 	public static void turnOn() {
 		//"power" uses put request
-		String command = "power=on";
-		int responseCode = setState(command);
+		int responseCode = setState("all", "power=on");
 	}
 	
 	public static void turnOff() {
 		//"power" uses put request
-		String command = "power=off";
-		int responseCode = setState(command);
+		int responseCode = setState("all", "power=off");
 	}
 	
+	public static void turnOn(String selector){
+		int responseCode = setState(selector, "power=on");
+	}
+	
+	public static void turnOff(String selector){
+		int responseCode = setState(selector, "power=off");
+	}
+	
+	//legacy
 	public static boolean isOn(){
 		TreeMap<String, String> jsonData = LightFunctions.getInfo();
 		if (jsonData.get("power").equalsIgnoreCase("on")){
@@ -78,11 +129,11 @@ public class LightFunctions {
 		return false;
 	}
 	
-	private static int setState(String data){
+	private static int setState(String selector, String data){
 		//String data in format "key=value". Eg) "power=on", "brightness=2.0", "color=#123456"
 		int responseCode = 0;
 		try {
-			URL url = new URL ("https://api.lifx.com/v1/lights/all/state");
+			URL url = new URL ("https://api.lifx.com/v1/lights/" + selector + "/state");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestProperty("Authorization", "Bearer " + token);
 			connection.setRequestMethod("PUT"); //Sets connection to PUT
@@ -115,14 +166,14 @@ public class LightFunctions {
 	}
 	
 	
-	private static String listLights(String selector){
+	public static String listLights(String selector){
 		String ret = null;
 		try {
-			URL url = new URL ("https://api.lifx.com/v1/lights/all"); 
+			URL url = new URL ("https://api.lifx.com/v1/lights/" + selector); 
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("Authorization", "Bearer " + token);
-			connection.setRequestProperty("selector", selector);
+			
 			
 			int responseCode = connection.getResponseCode();
 			if (responseCode != 200) {

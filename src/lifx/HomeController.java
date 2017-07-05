@@ -126,6 +126,7 @@ public class HomeController implements Initializable{
 			connection.showAndWait();
 		}*/
     	//check if light is on or off
+    	LightFunctions lf = new LightFunctions();
 		if (LightFunctions.isOn()){
 			lightPic.setOpacity(1);
 			on = true;

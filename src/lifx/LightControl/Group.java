@@ -1,5 +1,10 @@
 package lifx.LightControl;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 import lifx.LightFunctions;
 
 public class Group {
@@ -12,7 +17,10 @@ public class Group {
 		if(nameIn.startsWith("\"") && nameIn.endsWith("\"")) nameIn = nameIn.substring(1, nameIn.length()-1);
 		id = idIn;
 		name = nameIn;
-		System.out.println("Added Group: " + name);
+		
+		String lifxGroupString = LightFunctions.listLights("group_id:" + id);
+		JsonElement lifxJsonElement = new JsonParser().parse(lifxGroupString);
+		
 	}
 	
 	public void turnOn(){

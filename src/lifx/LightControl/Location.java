@@ -1,7 +1,7 @@
 package lifx.LightControl;
 
 import lifx.LightFunctions;
-import lifx.LightControl.*;
+import lifx.LightControl.Group;
 
 import java.util.ArrayList;
 
@@ -29,16 +29,15 @@ public class Location {
 		System.out.println(lifxLocationString);
 		
 		
-		Location[] lls = new Location[5];
 		JsonElement lifxJsonElement = new JsonParser().parse(lifxLocationString); //Holds everything
 		JsonArray lightArray = lifxJsonElement.getAsJsonArray(); //Also everything
 		//Lifx Json returns an array with each individual light in it
 		
 		//Put group objects in an ArrayList for first time (because dynamic)
-		ArrayList groupList = new ArrayList(); //Contains type lifx.LightControl.group for each location
+		ArrayList<Group> groupList = new ArrayList<Group>(); //Contains type lifx.LightControl.group for each location
 		JsonObject lightObject;
 		JsonObject lightLocation;
-		String currentId = "pp";
+		String currentId;
 		
 		int cont = 0;
 		
@@ -59,13 +58,15 @@ public class Location {
 				}
 			if (cont == 1) continue;
 			
+			//Creates a new Group class for the current group
 			Group currentGroup = new Group(currentId,lightLocation.get("name").toString());
+			if (currentGroup != null) System.out.println("Group object \"" + currentGroup.getName() + "\" created.");
 			groupList.add(currentGroup);
 		}
 		numGroups = groupList.size();
 		groups = new Group[groupList.size()];
 		//Put ArrayList into array. Efficiency?
-		for (int i = 0; i < groupList.size(); i++) groups[i] = (Group) groupList.get(i);
+		for (int i = 0; i < groupList.size(); i++) groups[i] = groupList.get(i);
 		System.out.println("Added location: " + name);
 	}
 

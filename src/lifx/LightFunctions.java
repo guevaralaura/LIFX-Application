@@ -33,7 +33,7 @@ public class LightFunctions {
 		//Lifx Json returns an array with each individual light in it
 		
 		//Put location objects in an ArrayList for first time (because dynamic)
-		ArrayList locationList = new ArrayList(); //Contains type lifx.LightControl.Location for each location
+		ArrayList<Location> locationList = new ArrayList<Location>(); //Contains type lifx.LightControl.Location for each location
 		JsonObject lightObject;
 		JsonObject lightLocation;
 		String currentId = "pp";
@@ -55,8 +55,10 @@ public class LightFunctions {
 					break;
 				}
 			if (cont == 1) continue;
-			
+
+			//Creates a new Location class for the current location
 			Location currentLocation = new Location(currentId,lightLocation.get("name").toString());
+			if (currentLocation != null) System.out.println("Location object \"" + currentLocation.getName() + "\" created.");
 			locationList.add(currentLocation);
 		}
 		numLocations = locationList.size();
@@ -117,7 +119,6 @@ public class LightFunctions {
 	public static void turnOff(String selector){
 		int responseCode = setState(selector, "power=off");
 	}
-	
 	
 	//legacy
 	public static boolean isOn(){

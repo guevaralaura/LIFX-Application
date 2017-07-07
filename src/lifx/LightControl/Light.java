@@ -1,24 +1,46 @@
 package lifx.LightControl;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+
+import lifx.LightFunctions;
 
 public class Light {
 	//Light class will control individual lights
 	private String id;
 	private String label;
 	
+	/**Requires a JsonObject containing only the light information to create.*/
 	public Light(JsonObject light){
 		id = removeQuotes(light.get("id").toString());
 		label = removeQuotes(light.get("label").toString());
-		
 	}
+	
 	
 	private String removeQuotes(String quoteString){ //TODO: Fix this, interfaces? Use with everything so public to Location, Group, Light in LightFunctions, but not to outside LightFunctions
 		if (quoteString.startsWith("\"") && quoteString.endsWith("\""))  return quoteString.substring(1, quoteString.length()-1);
 		else return quoteString;
+	}
+	
+	/**Turns on power for this specific light.*/
+	public void turnOn(){
+		LightFunctions.turnOn("id:" + id);
+	}
+	
+	/**Turns off power for this specific light.*/
+	public void turnOff(){
+		LightFunctions.turnOff("id:" + id);
+	}
+	
+	/**Returns id of Light object.
+	To use as a selector use String selector = "id:" + Light.getId()*/
+	public String getId(){
+		return id;
+	}
+	
+	/**Returns name/label of Light object.
+	 To use as a selector use String selector = "label:" + Light.getName()*/
+	public String getName(){
+		return label;
 	}
 }
 

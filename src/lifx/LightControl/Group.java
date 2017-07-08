@@ -21,7 +21,6 @@ public class Group{
 		if(nameIn.startsWith("\"") && nameIn.endsWith("\"")) nameIn = nameIn.substring(1, nameIn.length()-1);
 		id = idIn;
 		name = nameIn;
-		
 
 		String lifxGroupString = LightFunctions.listLights("group_id:" + id);
 		JsonElement lifxJsonElement = new JsonParser().parse(lifxGroupString);

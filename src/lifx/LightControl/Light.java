@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 
 import lifx.LightFunctions;
 
-public class Light {
+public class Light implements LifxController {
 	//Light class will control individual lights
 	private String id;
 	private String label;

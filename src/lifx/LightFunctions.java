@@ -160,8 +160,8 @@ public class LightFunctions {
 
 	/** listLights
 	Will return a single JSON String containing each light for the given token.
-	
-	Selector must be either "all", or selector:id (eg: "group_id:e3608...2ae2a")
+	* Along with the properties for each light.
+	* Selector must be either "all", or selector:id (eg: "group_id:e3608...2ae2a")
 	*/
 	public static String listLights(String selector){
 		String ret = null;

@@ -13,6 +13,8 @@ public class Group{
 	//Group class will house Lights and allow controls to entire group
 	private String id;
 	private String name;
+	private String selector;
+	
 	public Light[] lights;
 	public int numLights;
 	
@@ -21,8 +23,9 @@ public class Group{
 		if(nameIn.startsWith("\"") && nameIn.endsWith("\"")) nameIn = nameIn.substring(1, nameIn.length()-1);
 		id = idIn;
 		name = nameIn;
+		selector = "group_id:" + id;
 
-		String lifxGroupString = LightFunctions.listLights("group_id:" + id);
+		String lifxGroupString = LightFunctions.listLights(selector);
 		JsonElement lifxJsonElement = new JsonParser().parse(lifxGroupString);
 		JsonArray lightArray = lifxJsonElement.getAsJsonArray();
 		
@@ -48,11 +51,11 @@ public class Group{
 	}
 	
 	public void turnOn(){
-		LightFunctions.turnOn("group_id:" + id);
+		LightFunctions.turnOn(selector);
 	}
 	
 	public void turnOff(){
-		LightFunctions.turnOff("group_id:" + id);
+		LightFunctions.turnOff(selector);
 	}
 	//TODO: Figure out how inheritance works
 	

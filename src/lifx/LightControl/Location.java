@@ -68,6 +68,10 @@ public class Location {
 		//Put ArrayList into array. Efficiency?
 		for (int i = 0; i < groupList.size(); i++) groups[i] = groupList.get(i);
 		System.out.println("Added location: " + name);
+		
+		groupList = null;
+		lifxJsonElement = null;
+		
 	}
 
 	public void turnOn(){

@@ -102,6 +102,7 @@ public class LightFunctions {
 		int responseCode = setState("all", command);
 	}
 	
+	
 	public static void turnOn() {
 		//"power" uses put request
 		int responseCode = setState("all", "power=on");

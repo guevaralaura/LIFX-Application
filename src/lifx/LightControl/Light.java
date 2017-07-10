@@ -13,7 +13,7 @@ public class Light implements LifxController {
 	private String label;
 	private String selector;
 	
-	private String power;
+	private int power;
 	private float hue;
 	private float saturation;
 	private float kelvin;
@@ -24,6 +24,7 @@ public class Light implements LifxController {
 		id = removeQuotes(light.get("id").toString());
 		label = removeQuotes(light.get("label").toString());
 		selector = "id:" + id;
+		System.out.println(label + " is " + selector);
 	}
 	
 	/**Removes quotation marks from the first and last character of a given String*/
@@ -34,7 +35,7 @@ public class Light implements LifxController {
 	
 	/** Requests new information from LIFX server for the light
 	 * and updates that information in the class. This is to be done before each
-	  time a public or private get method is used.
+	  time a public or private "get" or "is" method is used.
 	 */
 	private void updateInfo(){
 		/* lightJsonObject is all the information in the light.
@@ -46,7 +47,8 @@ public class Light implements LifxController {
 		JsonArray lightJsonArray = lightJsonElement.getAsJsonArray();
 		JsonObject lightJsonObject = lightJsonArray.get(0).getAsJsonObject();
 		JsonObject colorInformationObject = lightJsonObject.get("color").getAsJsonObject();
-		power = removeQuotes(lightJsonObject.get("power").toString());
+		if (removeQuotes(lightJsonObject.get("power").toString()).equals("on")) power = 1;
+		else power = 0;
 		brightness = Float.valueOf(lightJsonObject.get("brightness").toString());
 		hue = Float.valueOf(colorInformationObject.get("hue").toString());
 		saturation = Float.valueOf(colorInformationObject.get("saturation").toString());
@@ -74,6 +76,31 @@ public class Light implements LifxController {
 	 To use as a selector use String selector = "label:" + Light.getName()*/
 	public String getName(){
 		return label;
+	}
+	
+	public int getPower(){
+		updateInfo();
+		return power;
+	}
+	
+	public float getHue(){
+		updateInfo();
+		return hue;
+	}
+	
+	public float getSaturation(){
+		updateInfo();
+		return saturation;
+	}
+	
+	public float getKelvin(){
+		updateInfo();
+		return kelvin;
+	}
+	
+	public float getBrightness(){
+		updateInfo();
+		return brightness;
 	}
 }
 

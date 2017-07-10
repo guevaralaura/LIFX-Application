@@ -16,10 +16,11 @@ import javafx.scene.control.ColorPicker;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import lifx.LightFunctions;
+import lifx.LightControl.LightFunctions;
 
 
 public class HomeController implements Initializable{
+	public LifxController LC;
 	@FXML
     private Circle lightOneClr;
 
@@ -62,9 +63,9 @@ public class HomeController implements Initializable{
 		if(colorPicker.getValue().toString().equals("0x000000ff")){
     		lightPic.setOpacity(0.2);
     		on = false;
-    		LightFunctions.turnOff();
+    		LC.Location[0].Group[0].Light[0].turnOff();
 		}else{
-			LightFunctions.setColour(parseHexColor(colorPicker.getValue().toString()));
+			LC.Location[0].Group[0].Light[0].setColor(parseHexColor(colorPicker.getValue().toString()));
 		}
     }
     
@@ -81,11 +82,11 @@ public class HomeController implements Initializable{
 		if(!on){
 			lightPic.setOpacity(1);
 			on = true;
-			LightFunctions.turnOn();
+			LC.Location[0].Group[0].Light[0].turnOn();
 		}else{
 			lightPic.setOpacity(0.2);
 			on = false;
-			LightFunctions.turnOff();
+			LC.Location[0].Group[0].Light[0].turnOff();
 		}
     }
 
@@ -126,8 +127,9 @@ public class HomeController implements Initializable{
 			connection.showAndWait();
 		}*/
     	//check if light is on or off
+    	LC = new LifxController();
     	LightFunctions lf = new LightFunctions();
-		if (LightFunctions.isOn()){
+		if (LC.Location[0].Group[0].Light[0].getPower() == 1){
 			lightPic.setOpacity(1);
 			on = true;
 		}else{

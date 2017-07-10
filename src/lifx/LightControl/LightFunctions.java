@@ -1,4 +1,4 @@
-package lifx;
+package lifx.LightControl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,98 +19,17 @@ import com.google.gson.JsonParser;
 import lifx.LightControl.*;
 
 public class LightFunctions {
-	//private static String token = "c8a6bd4449506916025d6b4e924e672e3b898af8520d2ddbe5ab075ff8d737e9";
 	private static String token = "cd0ed572badca8064cbdb078695975aa730217c5c8ec578e65e639df50d585c8"; //Laura
 	private static TreeMap<String, String> map;
-	public Location[] locations;
+	public Location[] Location;
 	public int numLocations;
 	public int numLights;
 	
-	public LightFunctions(){
-		String lifxDataString = listLights("all");
-		JsonElement lifxJsonElement = new JsonParser().parse(lifxDataString); //Holds everything
-		JsonArray lightArray = lifxJsonElement.getAsJsonArray(); //Also everything
-		//Lifx Json returns an array with each individual light in it
-		
-		//Put location objects in an ArrayList for first time (because dynamic)
-		ArrayList<Location> locationList = new ArrayList<Location>(); //Contains type lifx.LightControl.Location for each location
-		JsonObject lightObject;
-		JsonObject lightLocation;
-		String currentId = "pp";
-		int cont = 0;
-		
-		numLights = lightArray.size(); //Number of lights on account
-		//Go through each light, find its location, and create that location as an object
-		for (int i = 0; i < numLights; i++){
-			
-			lightObject = lightArray.get(i).getAsJsonObject();
-			lightLocation = lightObject.get("location").getAsJsonObject();
-			currentId = lightLocation.get("id").toString();
-			
-			int locationListSize = locationList.size();
-			for (int j = 0; j < locationListSize; j++)
-				//If location is already accounted for then 
-				if (currentId.equals(((Location) locationList.get(j)).getId())) { 
-					cont = 1;
-					break;
-				}
-			if (cont == 1) continue;
-
-			//Creates a new Location class for the current location
-			Location currentLocation = new Location(currentId,lightLocation.get("name").toString());
-			if (currentLocation != null) System.out.println("Location object \"" + currentLocation.getName() + "\" created.");
-			locationList.add(currentLocation);
-		}
-		numLocations = locationList.size();
-		locations = new Location[locationList.size()];
-		//Put ArrayList into array. Efficiency?
-		for (int i = 0; i < locationList.size(); i++) locations[i] = (Location) locationList.get(i);
-	}
-	
-	public static TreeMap<String, String>  getInfo(){
-		String lifxData = listLights("all");
-		//System.out.println(lifxData);
-		JsonElement response = new JsonParser().parse(lifxData);
-		JsonArray arr = response.getAsJsonArray();
-		Iterator<Entry<String, JsonElement>> iterator = arr.get(0).getAsJsonObject().entrySet().iterator();
-		TreeMap<String, String> map = new TreeMap<String, String>();
-		
-		while(iterator.hasNext()){
-			Entry<String, JsonElement> element = iterator.next();
-			String key = element.getKey();
-			String val = element.getValue().toString();
-			//splits string to get rid of quotation marks
-			if(val.startsWith("\"") && val.endsWith("\"")){
-				val = val.substring(1, val.length()-1);
-			}
-			map.put(key, val);
-		}
-		System.out.println(map);
-	
-		
-		/*		JsonObject lifxObject = response.getAsJsonObject();
-		String result = lifxObject.get("power").toString();
-		System.out.println(result);*/
-
-		return map;
-	}
-	
-	public static void setColour(String hexColour){
+	public static void setColour(String selector, String hexColour){
 		//"color" uses put request
 		String colorData = "#" + hexColour;
 		String command = "color=" + colorData;
-		int responseCode = setState("all", command);
-	}
-	
-	
-	public static void turnOn() {
-		//"power" uses put request
-		int responseCode = setState("all", "power=on");
-	}
-	
-	public static void turnOff() {
-		//"power" uses put request
-		int responseCode = setState("all", "power=off");
+		int responseCode = setState(selector, command);
 	}
 	
 	public static void turnOn(String selector){
@@ -121,13 +40,9 @@ public class LightFunctions {
 		int responseCode = setState(selector, "power=off");
 	}
 	
-	//legacy
-	public static boolean isOn(){
-		TreeMap<String, String> jsonData = LightFunctions.getInfo();
-		if (jsonData.get("power").equalsIgnoreCase("on")){
-			return true;
-		}		
-		return false;
+	/**Brightness level between 0.0 and 1.0*/
+	public static void setBrightness(String selector, float brightnessLevel){
+		setState(selector, "brightness=" + Float.toString(brightnessLevel));
 	}
 	
 	private static int setState(String selector, String data){
@@ -148,7 +63,7 @@ public class LightFunctions {
 			String line;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			while ((line = reader.readLine()) != null) {
-			    System.out.println(line);
+			    //System.out.println(line);
 			}
 			writer.close();
 			reader.close();
@@ -194,4 +109,11 @@ public class LightFunctions {
 		}
 		return ret; //All JSON data got from GET, in 1 line
 	}	
+
+	/**Removes quotation marks from the first and last character of a given String*/
+	public static String removeQuotes(String quoteString){
+		if (quoteString.startsWith("\"") && quoteString.endsWith("\""))  return quoteString.substring(1, quoteString.length()-1);
+		else return quoteString;
+	}
+
 }

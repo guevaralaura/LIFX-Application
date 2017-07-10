@@ -7,21 +7,19 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import lifx.LightFunctions;
-
 public class Group{
 	//Group class will house Lights and allow controls to entire group
 	private String id;
 	private String name;
 	private String selector;
 	
-	public Light[] lights;
+	public Light[] Light;
 	
 	private int numLights;
 	/*Following variables are true only if all lights in group are the same value for these properties
 	 * -1 if they are not the same, otherwise the value is correct for all lights.
 	 */
-	private float power; //-1 for not the same, 0 for off, 1 for on
+	private int power; //-1 for not the same, 0 for off, 1 for on
 	private float hue;
 	private float saturation;
 	private float kelvin;
@@ -48,15 +46,14 @@ public class Group{
 		for (int i = 0; i < numLights; i++){
 			lightObject = lightJsonArray.get(i).getAsJsonObject(); //Get new light from array
 			currentLight = new Light(lightObject); //Create new light object
-			if (currentLight != null) System.out.println("Light object \"" + currentLight.getName() + "\" created.");
+			if (currentLight != null) System.out.println("		Light object \"" + currentLight.getName() + "\" created. id:" + currentLight.getId());
 			lightList.add(currentLight);
 		}
 		
 		numLights = lightList.size();
-		lights = new Light[numLights];
+		Light = new Light[numLights];
 		//Put lights from lightList into a Light array for easier access
-		for (int i = 0; i < numLights; i++) lights[i] = lightList.get(i);
-		System.out.println("Added light \"" + name + "\" to group \"" + name + "\"");
+		for (int i = 0; i < numLights; i++) Light[i] = lightList.get(i);
 		
 		lightList = null;
 		lifxJsonElement = null; //Delete memory
@@ -73,7 +70,7 @@ public class Group{
 		JsonArray lightJsonArray = lifxJsonElement.getAsJsonArray();
 		JsonObject lightJsonObject = lightJsonArray.get(0).getAsJsonObject();
 		
-		String powerString = removeQuotes(((String) lightJsonObject.get("power").getAsString()));
+		String powerString = LightFunctions.removeQuotes(((String) lightJsonObject.get("power").getAsString()));
 		if (powerString.equals("on")) power = 1;
 		else power = 0;
 		hue = lightJsonObject.get("hue").getAsFloat();
@@ -85,7 +82,7 @@ public class Group{
 		//Compare each current property value to the property of the next light.
 		for (int i = 1; i < numLights; i++){
 			if (power != -1){ //Damn strings make this more difficult than it needs to be
-				powerString = removeQuotes(((String) lightJsonObject.get("power").getAsString()));
+				powerString = LightFunctions.removeQuotes(((String) lightJsonObject.get("power").getAsString()));
 				float powerCheck = power;
 				if (powerString.equals("on")) power = 1;
 				else power = 0;
@@ -99,26 +96,60 @@ public class Group{
 		lifxJsonElement = null;
 	}
 
-	/**Removes quotation marks from the first and last character of a given String*/
-	private String removeQuotes(String quoteString){
-		if (quoteString.startsWith("\"") && quoteString.endsWith("\""))  return quoteString.substring(1, quoteString.length()-1);
-		else return quoteString;
-	}
 	
+	
+	/**Turns on power for this group.*/
 	public void turnOn(){
 		LightFunctions.turnOn(selector);
 	}
 	
+	/**Turns off power for this group.*/
 	public void turnOff(){
 		LightFunctions.turnOff(selector);
 	}
 	
+	/**Sets the color of all lights in this group.
+	 * Input is a hex colour without # before it */
+	public void setColor(String hexColor){
+		LightFunctions.setColour(selector, hexColor);
+	}
+	
+	/**Brightness level between 0.0 and 1.0*/
+	public void setBrightness(float brightnessLevel){
+		LightFunctions.setBrightness(selector, brightnessLevel);
+	}
+		
 	public String getId(){
 		return id;
 	}
 	
 	public String getName(){
 		return name;
+	}
+	
+	public int getPower(){
+		updateInfo();
+		return power;
+	}
+	
+	public float getHue(){
+		updateInfo();
+		return hue;
+	}
+	
+	public float getSaturation(){
+		updateInfo();
+		return saturation;
+	}
+	
+	public float getKelvin(){
+		updateInfo();
+		return kelvin;
+	}
+	
+	public float getBrightness(){
+		updateInfo();
+		return brightness;
 	}
 
 	public int size(){

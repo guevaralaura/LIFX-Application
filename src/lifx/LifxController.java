@@ -1,6 +1,4 @@
-package lifx.LightControl;
-
-import lifx.LightControl.Group;
+package lifx;
 
 import java.util.ArrayList;
 
@@ -9,15 +7,17 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class Location {
-	//Location class will house Group class and allow controls to entire location
-	private String id;
-	private String name;
-	public Group[] Group;
-	public int numLights;
-	public int numGroups;
+import lifx.LightControl.LightFunctions;
+import lifx.LightControl.Location;
+
+public class LifxController {
 	
-	private String selector;
+	private static String token = "cd0ed572badca8064cbdb078695975aa730217c5c8ec578e65e639df50d585c8"; //Laura
+	public Location[] Location;
+	public int numLocations;
+	public int numLights;
+	private String selector = "all";
+	
 	/*Following variables are true only if all lights in group are the same value for these properties
 	 * -1 if they are not the same, otherwise the value is correct for all lights.
 	 */
@@ -27,58 +27,50 @@ public class Location {
 	private float kelvin;
 	private float brightness;
 	
-	public Location(String idIn, String nameIn){
-		//Remove quotation marks from strings
-		if(idIn.startsWith("\"") && idIn.endsWith("\"")) idIn = idIn.substring(1, idIn.length()-1);
-		if(nameIn.startsWith("\"") && nameIn.endsWith("\"")) nameIn = nameIn.substring(1, nameIn.length()-1);
-		id = idIn;
-		name = nameIn;
-		selector = "location_id:" + id;
-		
-		String lifxLocationString = LightFunctions.listLights("location_id:" + id);
-		//System.out.println(lifxLocationString);
-		
-		JsonElement lifxJsonElement = new JsonParser().parse(lifxLocationString); //Holds everything
+	/**Creates a new LifxController. This controller houses locations, groups, and lights.
+	 * To access a location use LifxController.Location[i].foo();
+	 * Similarly, group is LifxController.Location[i].Group[j].foo();
+	 * Lights are LifxController.Location[i].Group[j].Light[k].foo();
+	 */
+	public LifxController(){
+		String lifxDataString = LightFunctions.listLights("all");
+		JsonElement lifxJsonElement = new JsonParser().parse(lifxDataString); //Holds everything
 		JsonArray lightArray = lifxJsonElement.getAsJsonArray(); //Also everything
 		//Lifx Json returns an array with each individual light in it
 		
-		//Put group objects in an ArrayList for first time (because dynamic)
-		ArrayList<Group> groupList = new ArrayList<Group>(); //Contains type lifx.LightControl.group for each location
+		//Put location objects in an ArrayList for first time (because dynamic)
+		ArrayList<Location> locationList = new ArrayList<Location>(); //Contains type lifx.LightControl.Location for each location
 		JsonObject lightObject;
 		JsonObject lightLocation;
-		String currentId;
-		
+		String currentId = "pp";
 		int cont = 0;
 		
-		numLights = lightArray.size(); //Number of lights in location
+		numLights = lightArray.size(); //Number of lights on account
 		//Go through each light, find its location, and create that location as an object
 		for (int i = 0; i < numLights; i++){
 			
 			lightObject = lightArray.get(i).getAsJsonObject();
-			lightLocation = lightObject.get("group").getAsJsonObject();
+			lightLocation = lightObject.get("location").getAsJsonObject();
 			currentId = lightLocation.get("id").toString();
 			
-			int locationListSize = groupList.size();
+			int locationListSize = locationList.size();
 			for (int j = 0; j < locationListSize; j++)
 				//If location is already accounted for then 
-				if (currentId.equals(((Group) groupList.get(j)).getId())) { 
+				if (currentId.equals(((Location) locationList.get(j)).getId())) { 
 					cont = 1;
 					break;
 				}
 			if (cont == 1) continue;
-			
-			//Creates a new Group class for the current group
-			Group currentGroup = new Group(currentId,lightLocation.get("name").toString());
-			if (currentGroup != null) System.out.println("	Group object \"" + currentGroup.getName() + "\" created.");
-			groupList.add(currentGroup);
+
+			//Creates a new Location class for the current location
+			Location currentLocation = new Location(currentId,lightLocation.get("name").toString());
+			if (currentLocation != null) System.out.println("Location object \"" + currentLocation.getName() + "\" created.");
+			locationList.add(currentLocation);
 		}
-		numGroups = groupList.size();
-		Group = new Group[groupList.size()];
+		numLocations = locationList.size();
+		Location = new Location[locationList.size()];
 		//Put ArrayList into array. Efficiency?
-		for (int i = 0; i < groupList.size(); i++) Group[i] = groupList.get(i);
-		
-		groupList = null;
-		lifxJsonElement = null;
+		for (int i = 0; i < locationList.size(); i++) Location[i] = (Location) locationList.get(i);
 	}
 
 	/** Requests new information from LIFX server for the group
@@ -118,16 +110,16 @@ public class Location {
 		lifxJsonElement = null;
 	}
 	
-	/**Turns on power for this location.*/
+	/**Turns on power for all lights.*/
 	public void turnOn(){
 		LightFunctions.turnOn(selector);
 	}
 	
-	/**Turns off power for this location.*/
+	/**Turns off power for all lights.*/
 	public void turnOff(){
 		LightFunctions.turnOff(selector);
 	}
-	
+
 	/**Sets the color of all lights in this location. 
 	 * Input is a hex colour without # before it */
 	public void setColor(String hexColor){
@@ -137,14 +129,6 @@ public class Location {
 	/**Brightness level between 0.0 and 1.0*/
 	public void setBrightness(float brightnessLevel){
 		LightFunctions.setBrightness(selector, brightnessLevel);
-	}
-	
-	public String getId(){
-		return id;
-	}
-	
-	public String getName(){
-		return name;
 	}
 	
 	public int getPower(){
@@ -175,4 +159,6 @@ public class Location {
 	public int size(){
 		return numLights;
 	}
+	
 }
+

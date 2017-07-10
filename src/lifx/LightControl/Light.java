@@ -5,9 +5,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import lifx.LightFunctions;
+import lifx.LifxController;
 
-public class Light implements LifxController {
+public class Light {
 	//Light class will control individual lights
 	private String id;
 	private String label;
@@ -21,17 +21,12 @@ public class Light implements LifxController {
 	
 	/**Requires a JsonObject containing only the light information to create.*/
 	public Light(JsonObject light){
-		id = removeQuotes(light.get("id").toString());
-		label = removeQuotes(light.get("label").toString());
+		id = LightFunctions.removeQuotes(light.get("id").toString());
+		label = LightFunctions.removeQuotes(light.get("label").toString());
 		selector = "id:" + id;
-		System.out.println(label + " is " + selector);
 	}
 	
-	/**Removes quotation marks from the first and last character of a given String*/
-	private String removeQuotes(String quoteString){
-		if (quoteString.startsWith("\"") && quoteString.endsWith("\""))  return quoteString.substring(1, quoteString.length()-1);
-		else return quoteString;
-	}
+	
 	
 	/** Requests new information from LIFX server for the light
 	 * and updates that information in the class. This is to be done before each
@@ -47,7 +42,7 @@ public class Light implements LifxController {
 		JsonArray lightJsonArray = lightJsonElement.getAsJsonArray();
 		JsonObject lightJsonObject = lightJsonArray.get(0).getAsJsonObject();
 		JsonObject colorInformationObject = lightJsonObject.get("color").getAsJsonObject();
-		if (removeQuotes(lightJsonObject.get("power").toString()).equals("on")) power = 1;
+		if (LightFunctions.removeQuotes(lightJsonObject.get("power").toString()).equals("on")) power = 1;
 		else power = 0;
 		brightness = Float.valueOf(lightJsonObject.get("brightness").toString());
 		hue = Float.valueOf(colorInformationObject.get("hue").toString());
@@ -64,6 +59,16 @@ public class Light implements LifxController {
 	/**Turns off power for this specific light.*/
 	public void turnOff(){
 		LightFunctions.turnOff(selector);
+	}
+	
+	/**Sets the color of this light. Input is a hex colour without # before it */
+	public void setColor(String hexColor){
+		LightFunctions.setColour(selector, hexColor);
+	}
+	
+	/**Brightness level between 0.0 and 1.0*/
+	public void setBrightness(float brightnessLevel){
+		LightFunctions.setBrightness(selector, brightnessLevel);
 	}
 	
 	/**Returns id of Light object.

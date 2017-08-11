@@ -1919,9 +1919,13 @@ is being used to size a border should also be in pixels.
  * ColorPicker                                                                 *
  *                                                                             *
  ******************************************************************************/
-
+.color-picker, .color-picker:focused{
+	-fx-border-width: 1px;
+	-fx-border-color: white;
+	-fx-background-color: black;
+	-fx-border-radius:  6;
+}
 .color-picker > .arrow-button {
-    -fx-background-color: null;
     -fx-padding: 6 6 6 0; /*  6 8 6 0 */
 }
 .color-picker > .arrow-button > .arrow {
@@ -1932,9 +1936,7 @@ is being used to size a border should also be in pixels.
 	-fx-font-size: 12px;
 	-fx-padding: 6 0 6 4; /*  6 8 6 0 */
 }	
-.color-picker> .arrow-button: > .arrow {
-	-fx-background-color: black;
-}
+
 .color-picker.split-button > .arrow-button  {
     -fx-background-color: white;
     -fx-background-insets: 1 1 1 0, 1, 2;
@@ -1957,26 +1959,27 @@ is being used to size a border should also be in pixels.
 }
 .color-picker > .color-picker-label > .picker-color > .picker-color-rect {
     -fx-stroke: -fx-box-border;
+    
+}
+.color-picker > .color-picker-label > .picker-color {
+	-fx-background-color: black;
 }
 
 .color-palette {
     -fx-spacing: 0.833333em; /* 10px */
-    -fx-background-color:
-        linear-gradient(to bottom,
-            derive(-fx-color,-17%),
-            derive(-fx-color,-30%)
-        ),
-        linear-gradient(to bottom,
-            derive(-fx-background,10%) 0%,
-            derive(-fx-background,-5%) 12%,
-            derive(-fx-background,15%) 88%,
-            derive(-fx-background,-10%) 100%);
+    -fx-border-width: 1px;
+    -fx-border-color: white;
+    -fx-background-color: black;
     -fx-background-insets: 0, 1;
     -fx-background-radius: 6, 5;
     -fx-padding: 1em; /* 12 */
     -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.2) , 12, 0.0 , 0 , 8 );
 }
+.color-palette > pane{
+	    -fx-opacity: 0.8;
+}
 .color-palette > .color-picker-grid {
+	-fx-opacity: 1;
     -fx-padding: 0.5px;
     -fx-snap-to-pixel: false;
 }

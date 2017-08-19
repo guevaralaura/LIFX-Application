@@ -1,4 +1,4 @@
-package lifx.LightControl;
+package lifx;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,22 +6,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
-import lifx.LightControl.*;
 
 public class LightFunctions {
 	private static String token = "cd0ed572badca8064cbdb078695975aa730217c5c8ec578e65e639df50d585c8"; //Laura
 	private static TreeMap<String, String> map;
-	public Location[] Location;
+	//public Location[] Location;
 	public int numLocations;
 	public int numLights;
 	
@@ -60,11 +52,11 @@ public class LightFunctions {
 			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
 			writer.write(data);
 			writer.flush();
-			String line;
+			//String line;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			while ((line = reader.readLine()) != null) {
-			    //System.out.println(line);
-			}
+//			while ((line = reader.readLine()) != null) {
+//			    //System.out.println(line);
+//			}
 			writer.close();
 			reader.close();
 			responseCode = connection.getResponseCode(); //Gets response code from server, ensures good connection

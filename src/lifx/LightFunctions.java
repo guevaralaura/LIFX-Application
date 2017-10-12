@@ -6,142 +6,106 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+
 
 public class LightFunctions {
-	private static String token = "c8a6bd4449506916025d6b4e924e672e3b898af8520d2ddbe5ab075ff8d737e9";
+	private static String token = "cd0ed572badca8064cbdb078695975aa730217c5c8ec578e65e639df50d585c8"; //Laura
 	private static TreeMap<String, String> map;
+	//public Location[] Location;
+	public int numLocations;
+	public int numLights;
 	
-	public LightFunctions(){
-		map = getInfo();
-		map.get("location");
-	}
-	
-	public static TreeMap<String, String>  getInfo(){
-		String lifxData = listLights("all");
-		//System.out.println(lifxData);
-		JsonElement response = new JsonParser().parse(lifxData);
-		JsonArray arr = response.getAsJsonArray();
-		Iterator<Entry<String, JsonElement>> iterator = arr.get(0).getAsJsonObject().entrySet().iterator();
-		TreeMap<String, String> map = new TreeMap<String, String>();
-		
-		while(iterator.hasNext()){
-			Entry<String, JsonElement> element = iterator.next();
-			String key = element.getKey();
-			String val = element.getValue().toString();
-			//splits string to get rid of quotation marks
-			if(val.startsWith("\"") && val.endsWith("\"")){
-				val = val.substring(1, val.length()-1);
-			}
-			map.put(key, val);
-		}
-		System.out.println(map);
-	
-		
-		/*		JsonObject lifxObject = response.getAsJsonObject();
-		String result = lifxObject.get("power").toString();
-		System.out.println(result);*/
-
-		return map;
-	}
-	
-	public static void setColour(String hexColour){
+	public static void setColour(String selector, String hexColour){
 		//"color" uses put request
 		String colorData = "#" + hexColour;
 		String command = "color=" + colorData;
-		int responseCode = setState(command);
+		int responseCode = setState(selector, command);
 	}
 	
-	public static void turnOn() {
-		//"power" uses put request
-		String command = "power=on";
-		int responseCode = setState(command);
+	public static void turnOn(String selector){
+		int responseCode = setState(selector, "power=on");
 	}
 	
-	public static void turnOff() {
-		//"power" uses put request
-		String command = "power=off";
-		int responseCode = setState(command);
+	public static void turnOff(String selector){
+		int responseCode = setState(selector, "power=off");
 	}
 	
-	public static boolean isOn(){
-		TreeMap<String, String> jsonData = LightFunctions.getInfo();
-		if (jsonData.get("power").equalsIgnoreCase("on")){
-			return true;
-		}		
-		return false;
+	/**Brightness level between 0.0 and 1.0*/
+	public static void setBrightness(String selector, float brightnessLevel){
+		setState(selector, "brightness=" + Float.toString(brightnessLevel));
 	}
 	
-	private static int setState(String data){
+	private static int setState(String selector, String data){
 		//String data in format "key=value". Eg) "power=on", "brightness=2.0", "color=#123456"
 		int responseCode = 0;
 		try {
-			URL url = new URL ("https://api.lifx.com/v1/lights/all/state");
+			//Selector (all, location_id, group_name, etc.) is part of URL
+			URL url = new URL ("https://api.lifx.com/v1/lights/" + selector + "/state");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestProperty("Authorization", "Bearer " + token);
 			connection.setRequestMethod("PUT"); //Sets connection to PUT
 			connection.setDoOutput(true);
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-			//responseCode = connection.getResponseCode(); //Gets response code from server, ensures good connection
-			//if (responseCode > 200) return responseCode;
+		
 			OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
 			writer.write(data);
 			writer.flush();
-			String line;
+			//String line;
 			BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			while ((line = reader.readLine()) != null) {
-			    System.out.println(line);
-			}
+//			while ((line = reader.readLine()) != null) {
+//			    //System.out.println(line);
+//			}
 			writer.close();
 			reader.close();
 			responseCode = connection.getResponseCode(); //Gets response code from server, ensures good connection
 		} catch (IOException e){
 			e.printStackTrace();
 		}
-		
-		System.out.println(responseCode);
-		
-
-	    TreeMap<String, String> jsonData = getInfo();
-		System.out.println("power: "+jsonData.get("power"));
-		System.out.println("color: "+jsonData.get("color"));
 		return responseCode;
 	}
-	
-	
-	private static String listLights(String selector){
+
+	/** listLights
+	Will return a single JSON String containing each light for the given token.
+	* Along with the properties for each light.
+	* Selector must be either "all", or selector:id (eg: "group_id:e3608...2ae2a")
+	*/
+	public static String listLights(String selector){
 		String ret = null;
 		try {
-			URL url = new URL ("https://api.lifx.com/v1/lights/all"); 
+			//Open connection to URL as GET with token
+			URL url = new URL ("https://api.lifx.com/v1/lights/" + selector); 
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.setRequestProperty("Authorization", "Bearer " + token);
-			connection.setRequestProperty("selector", selector);
+			
 			
 			int responseCode = connection.getResponseCode();
 			if (responseCode != 200) {
-				System.out.println("Response Code: " + responseCode);
+				System.out.println("Error in listLights?: Response Code: " + responseCode);
 			}
 
+			//BufferedReader used to get Strings from server
 			BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String inputLine;
-			StringBuffer response = new StringBuffer();
+			StringBuffer response = new StringBuffer(); //Must be used for .append so all JSON can be in 1 string
 
 			while ((inputLine = in.readLine()) != null) {
 				response.append(inputLine);
 			}
 			in.close();
 			ret = response.toString();
-			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return ret;
+		return ret; //All JSON data got from GET, in 1 line
 	}	
+
+	/**Removes quotation marks from the first and last character of a given String*/
+	public static String removeQuotes(String quoteString){
+		if (quoteString.startsWith("\"") && quoteString.endsWith("\""))  return quoteString.substring(1, quoteString.length()-1);
+		else return quoteString;
+	}
+
 }

@@ -22,6 +22,7 @@ public class Main extends Application {
 			Scene scene = new Scene(root, root.getPrefWidth()-12,root.getPrefHeight()-12);
 
 			scene.getStylesheets().add(getClass().getResource("modena.css").toExternalForm());	
+			scene.getStylesheets().add(getClass().getResource("../lightcomponent/style.css").toExternalForm());	
 			primaryStage.setScene(scene);
 			//primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Icons/icon.png")));
 			primaryStage.setTitle("MacOS Lifx Controller");

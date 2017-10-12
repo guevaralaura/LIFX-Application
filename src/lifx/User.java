@@ -1,21 +1,17 @@
 package lifx;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import lifx.LightControl.LightFunctions;
-import lifx.LightControl.Location;
+public class User {
 
-public class LifxController {
-	
-	private static String token = "cd0ed572badca8064cbdb078695975aa730217c5c8ec578e65e639df50d585c8"; //Laura
-	public Location[] Location;
-	public int numLocations;
 	public int numLights;
+	public List<Light> lights = new ArrayList();
 	private String selector = "all";
 	
 	/*Following variables are true only if all lights in group are the same value for these properties
@@ -32,45 +28,20 @@ public class LifxController {
 	 * Similarly, group is LifxController.Location[i].Group[j].foo();
 	 * Lights are LifxController.Location[i].Group[j].Light[k].foo();
 	 */
-	public LifxController(){
+	public User(){
 		String lifxDataString = LightFunctions.listLights("all");
 		JsonElement lifxJsonElement = new JsonParser().parse(lifxDataString); //Holds everything
 		JsonArray lightArray = lifxJsonElement.getAsJsonArray(); //Also everything
-		//Lifx Json returns an array with each individual light in it
-		
-		//Put location objects in an ArrayList for first time (because dynamic)
-		ArrayList<Location> locationList = new ArrayList<Location>(); //Contains type lifx.LightControl.Location for each location
-		JsonObject lightObject;
-		JsonObject lightLocation;
-		String currentId = "pp";
-		int cont = 0;
+		//System.out.println(lightArray);
 		
 		numLights = lightArray.size(); //Number of lights on account
-		//Go through each light, find its location, and create that location as an object
 		for (int i = 0; i < numLights; i++){
-			
-			lightObject = lightArray.get(i).getAsJsonObject();
-			lightLocation = lightObject.get("location").getAsJsonObject();
-			currentId = lightLocation.get("id").toString();
-			
-			int locationListSize = locationList.size();
-			for (int j = 0; j < locationListSize; j++)
-				//If location is already accounted for then 
-				if (currentId.equals(((Location) locationList.get(j)).getId())) { 
-					cont = 1;
-					break;
-				}
-			if (cont == 1) continue;
-
-			//Creates a new Location class for the current location
-			Location currentLocation = new Location(currentId,lightLocation.get("name").toString());
-			if (currentLocation != null) System.out.println("Location object \"" + currentLocation.getName() + "\" created.");
-			locationList.add(currentLocation);
+			Light light = new Light(lightArray.get(i).getAsJsonObject());
+			lights.add(light);
+			//System.out.println(lights.get(i).getName());
 		}
-		numLocations = locationList.size();
-		Location = new Location[locationList.size()];
-		//Put ArrayList into array. Efficiency?
-		for (int i = 0; i < locationList.size(); i++) Location[i] = (Location) locationList.get(i);
+		//System.out.println(lights);
+
 	}
 
 	/** Requests new information from LIFX server for the group
@@ -108,6 +79,14 @@ public class LifxController {
 			if ((brightness != -1) && (brightness != lightJsonObject.get("brightness").getAsFloat())) brightness = -1;
 		}
 		lifxJsonElement = null;
+	}
+	public Light getLight(String id){
+		for(Light each : lights){
+			if(each.getId().equals(id)){
+				return each;
+			}
+		}
+		return null;
 	}
 	
 	/**Turns on power for all lights.*/
@@ -161,4 +140,3 @@ public class LifxController {
 	}
 	
 }
-

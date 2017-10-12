@@ -24,7 +24,7 @@
                </cursor></Circle>
          </children>
       </AnchorPane>
-      <ColorPicker fx:id="colorPicker" onAction="#handleColorPicker" prefWidth="112.0" style="-fx-background-color: black; -fx-border-color: white; -fx-border-width: 1px;" />
+      <ColorPicker fx:id="colorPicker" onAction="#handleColorPicker" prefWidth="112.0" styleClass="color-picker" />
       <Label fx:id="label" alignment="CENTER" prefWidth="112.0" style="-fx-text-fill: white;" textAlignment="CENTER" />
    </children>
 </fx:root>

@@ -12,31 +12,28 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox fillWidth="false" maxHeight="550.0" maxWidth="500.0" minHeight="550.0" minWidth="500.0" prefHeight="550.0" prefWidth="500.0" style="-fx-background-color: black;" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lifx.HomeController">
+<VBox fillWidth="false" maxHeight="550.0" maxWidth="500.0" minHeight="550.0" minWidth="500.0" prefHeight="550.0" prefWidth="500.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lifx.HomeController">
   <children>
     <AnchorPane fx:id="pane" maxHeight="-1.0" maxWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <Separator layoutX="17.0" layoutY="287.0" prefHeight="2.0" prefWidth="460.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#440099" height="70.0" stroke="BLACK" strokeType="INSIDE" width="500.0" />
-            <Label alignment="CENTER" layoutX="17.0" layoutY="88.0" prefHeight="21.0" prefWidth="460.0" style="-fx-text-fill: white;" text="Lights">
+            <Separator layoutX="17.0" layoutY="301.0" prefHeight="2.0" prefWidth="460.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#705bd0" height="70.0" stroke="BLACK" strokeType="INSIDE" styleClass="rec" width="500.0" />
+            <Label alignment="CENTER" layoutX="17.0" layoutY="83.0" prefHeight="21.0" prefWidth="460.0" style="-fx-text-fill: white;" text="Lights">
                <font>
-                  <Font size="18.0" />
+                  <Font name="3ds-Light" size="18.0" />
                </font>
             </Label>
             
                   <Label alignment="CENTER" layoutX="20.0" layoutY="320.0" prefHeight="21.0" prefWidth="460.0" style="-fx-text-fill: white;" text="Scenes">
                <font>
-                  <Font size="18.0" />
+                  <Font name="3ds-Light" size="18.0" />
                </font>
             </Label>
             
-                  <Button fx:id="settingsBtn" layoutX="399.0" layoutY="17.0" mnemonicParsing="false" onAction="#handleSettings" text="Settings" />
-           
-                  <ImageView fitHeight="63.0" fitWidth="131.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@logo.png" />
-               </image>
-            </ImageView>
+                  <Button fx:id="settingsBtn" layoutX="301.0" layoutY="135.0" mnemonicParsing="false" onAction="#handleSettings" text="Settings">
+               <font>
+                  <Font name="3ds-Light" size="15.0" />
+               </font></Button>
             <Circle fx:id="sceneOneClr" fill="#ff5959" layoutX="99.0" layoutY="436.0" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -45,10 +42,20 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Circle>
-            <Circle fx:id="sceneThreeClr" fill="#ff59d0" layoutX="399.0" layoutY="436.0" onDragDetected="#handleScene" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0">
+            <Circle fx:id="sceneThreeClr" fill="#ff59d3" layoutX="399.0" layoutY="436.0" onDragDetected="#handleScene" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Circle>
+            <Label layoutX="24.0" layoutY="15.0" text="LIFX">
+               <font>
+                  <Font name="3ds-Light" size="36.0" />
+               </font>
+            </Label>
+            <ImageView fitHeight="44.0" fitWidth="69.0" layoutX="428.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../settings.png" />
+               </image>
+            </ImageView>
          </children>
     </AnchorPane>
   </children>

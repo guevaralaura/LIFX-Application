@@ -4,19 +4,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.TreeMap;
-
-
-
-
-import com.jfoenix.controls.JFXColorPicker;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ColorPicker;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
@@ -25,9 +16,9 @@ import lightcomponent.Component;
 
 
 public class HomeController implements Initializable{
-	
-	public LifxController LC;
-	
+	public static String currentId;
+	public static User user;
+	public static List<Light> lightsList;
 	@FXML
 	private AnchorPane pane;
 	
@@ -43,80 +34,67 @@ public class HomeController implements Initializable{
     @FXML
     private Circle sceneOneClr;
     
-    @FXML
-    private ImageView lightPic;
+//    @FXML
+//    private ImageView lightPic;
     
-    List<Component> lights = new ArrayList();
+    List<Component> lightsUI = new ArrayList();
+    
 
+    String parseHexColor(String original){
+		StringBuilder sb = new StringBuilder(original);
+		//Remove "0x" and "ff" from front and end of color string
+		sb.deleteCharAt(9); sb.deleteCharAt(8); sb.deleteCharAt(1); sb.deleteCharAt(0);
+		return sb.toString();
+    }
+    
     @FXML
     void handleScene(MouseEvent event) {
-    	String[] arr = event.getSource().toString().split(", ");
-    	String id = arr[0].substring(10);
-//    	for(Component each : lights){
-//        	if(id.equalsIgnoreCase("sceneone")){
-//        		//LightFunctions.setColour(parseHexColor(sceneOneClr.getFill().toString()));
-//        		each.setColor(sceneOneClr.getFill().toString());
-//        	}else if(id.equalsIgnoreCase("scenetwo")){
-//        		//LightFunctions.setColour(parseHexColor(sceneTwoClr.getFill().toString()));
-//        		each.setColor(sceneTwoClr.getFill().);
-//        	}else{
-//        		//LightFunctions.setColour(parseHexColor(sceneThreeClr.getFill().toString()));
-//        		each.setColor((Color)sceneThreeClr.getFill());
-//        	}
-//    	}
-
-    	
+    	//set all the lights to the same color
+	    String[] arr = event.getSource().toString().split(", ");
+	   	String id = arr[0].substring(10);
+	   	Color wanted = (Color) sceneThreeClr.getFill();
+	   	if(id.equalsIgnoreCase("sceneoneclr")){
+			wanted = (Color) sceneOneClr.getFill();
+	   	}else if(id.equalsIgnoreCase("scenetwoclr")){
+	   		wanted = (Color) sceneTwoClr.getFill();
+		}
+	   	//System.out.println(wanted);
+		for(Component each : lightsUI){
+			each.setColor(wanted);
+			//Component.update.fire();
+	   }
     }
 
     
     @FXML
     void handleSettings(ActionEvent event) {
-    	//ad sign in for lifx and get key
+    	//add sign in for lifx and get key
     }
     boolean on = false;
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-    	//check if light is connected
-/*		if (!jsonData.get("connected").equalsIgnoreCase("true")){
-			Alert connection = new Alert(AlertType.ERROR);
-			connection.setTitle("Connection Error");
-			connection.setContentText("Lifx could not be found.");
-			connection.showAndWait();
-		}*/
-    	//how many k
+    	//create user class and get all the lights in this account
+    	user = new User();
+    	getLightsList();
+    	int total = user.numLights;
     	
-    	//check if light is on or off
-    	LC = new LifxController();
-//    	LightFunctions lf = new LightFunctions();
-//		if (LC.Location[0].Group[0].Light[0].getPower() == 1){
-//			lightPic.setOpacity(1);
-//			on = true;
-//		}else{
-//			lightPic.setOpacity(0.2);
-//			on = false;
-//		}
-		
-		int total = LC.numLights;
-		
 		double x = 34;
 		for(int i=0; i <total; i++){
-			createLightUI(i, x);
+			currentId = lightsList.get(i).getId();
+			createLightUI(x);
 			x+=150;
-		}
+		} 
 		
-		
-		
-   		//set colorpicker to current color of lifx with getters and setters
-    		
     }
-    
-    public void createLightUI(int id, double x){
+    public void getLightsList(){
+    	lightsList = user.lights;
+    }
+    public void createLightUI(double x){
     	Component comp = new Component();
-    	comp.setName(String.valueOf(id));
     	comp.setLayoutX(x);
     	comp.setLayoutY(124);
         pane.getChildren().addAll(comp);
-        lights.add(comp);
+        lightsUI.add(comp);
     }
     
 

@@ -1,11 +1,11 @@
-package lifx.LightControl;
+package lifx;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import lifx.LifxController;
+
 
 public class Light {
 	//Light class will control individual lights
@@ -107,6 +107,8 @@ public class Light {
 		updateInfo();
 		return brightness;
 	}
+	
+
 }
 
 

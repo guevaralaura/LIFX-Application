@@ -36,7 +36,7 @@ Steps to import project into [IntelliJ](https://www.jetbrains.com/idea/download/
 3. Select 1.8 JDK
 
 ## GUI Example
-![alt text](Resources/screenshot.jpg)
+![alt text](Resources/screenshot.png)
 
 ## Version Control
 

@@ -27,7 +27,7 @@ public class Main extends Application {
             scene.getStylesheets().add(getClass().getResource("../lightComponent/lightUI.css").toExternalForm());
             primaryStage.setScene(scene);
             //primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Icons/icon.png")));
-            primaryStage.setTitle("Lifx Device Controller");
+            primaryStage.setTitle("LIFX Device Controller");
             primaryStage.show();
             primaryStage.setResizable(false);
             setPrimaryStage(primaryStage);

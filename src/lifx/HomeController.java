@@ -2,27 +2,23 @@ package lifx;
 
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
+
 import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import lightComponent.LightController;
 
-public class HomeController implements Initializable{
+public class HomeController implements Initializable {
     public static int currentId;
     public static String sceneColor;
     public static String token;
@@ -64,10 +60,13 @@ public class HomeController implements Initializable{
     private List<LightController> lightsUI = new ArrayList();
 
 
-    public static String parseHexColor(String original){
+    public static String parseHexColor(String original) {
         StringBuilder sb = new StringBuilder(original);
         //Remove "0x" and "ff" from front and end of color string
-        sb.deleteCharAt(9); sb.deleteCharAt(8); sb.deleteCharAt(1); sb.deleteCharAt(0);
+        sb.deleteCharAt(9);
+        sb.deleteCharAt(8);
+        sb.deleteCharAt(1);
+        sb.deleteCharAt(0);
         return sb.toString();
     }
 
@@ -77,17 +76,17 @@ public class HomeController implements Initializable{
         String[] arr = event.getSource().toString().split(", ");
         String id = arr[0].substring(10);
         sceneColor = parseHexColor(sceneThreeClr.getFill().toString());
-        if(id.equalsIgnoreCase("sceneoneclr")){
+        if (id.equalsIgnoreCase("sceneoneclr")) {
             sceneColor = parseHexColor(sceneOneClr.getFill().toString());
-        }else if(id.equalsIgnoreCase("scenetwoclr")){
+        } else if (id.equalsIgnoreCase("scenetwoclr")) {
             sceneColor = parseHexColor(sceneTwoClr.getFill().toString());
         }
 
         //logic
-        if(sceneColor.equals("0x000000ff")){
+        if (sceneColor.equals("0x000000ff")) {
             LightLogic.turnOff(-1);
 
-        }else{
+        } else {
             LightLogic.setColor(sceneColor, -1);
             LightLogic.turnOn(-1);
         }
@@ -106,12 +105,14 @@ public class HomeController implements Initializable{
         settingsHover.setVisible(false);
         //open new dialog to enter token
     }
+
     @FXML
     void handleSettingsPressed(MouseEvent event) {
         settingsDown.setVisible(true);
         settingsUp.setVisible(false);
         settingsHover.setVisible(false);
     }
+
     @FXML
     void handleSettingsHover(MouseEvent event) {
         settingsDown.setVisible(false);
@@ -134,19 +135,19 @@ public class HomeController implements Initializable{
         getLightsList();
         int total = lightsList.size();
         double x = 34;
-        for(int i=0; i <total; i++){
+        for (int i = 0; i < total; i++) {
             currentId = i;
             createLightUI(x);
-            x+=150;
+            x += 150;
             checkConnection(lightsList.get(i));
         }
     }
 
-    private void getLightsList(){
+    private void getLightsList() {
         lightsList = DataParser.getLights();
     }
 
-    private void createLightUI(double x){
+    private void createLightUI(double x) {
         LightController lightItem = new LightController();
         lightItem.setLayoutX(x);
         lightItem.setId(String.valueOf(currentId));
@@ -155,8 +156,8 @@ public class HomeController implements Initializable{
         lightsUI.add(lightItem);
     }
 
-    private void checkConnection(JsonObject light){
-        if(light.get("connected").getAsString().equalsIgnoreCase("false")) {
+    private void checkConnection(JsonObject light) {
+        if (light.get("connected").getAsString().equalsIgnoreCase("false")) {
             String name = light.get("label").getAsString();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Connection Error");

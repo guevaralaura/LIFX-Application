@@ -1,0 +1,46 @@
+.color-picker{
+    -fx-background-color: #17202A;
+    -fx-border-width: 1px;
+    -fx-border-color: darkgrey;
+    -fx-background-radius: 16px;
+    -fx-border-radius: 16px;
+}
+
+.color-picker > .label{
+    -fx-font-family: "3ds Light";
+    -fx-text-fill: darkgrey;
+    -fx-font-size: 15;
+}
+
+.color-picker > .arrow-button > .arrow {
+    -fx-background-color: #d3d3d3;
+}
+
+.color-picker:pressed > .label{
+    -fx-text-fill: grey;
+}
+.color-palette > .pane{
+    -fx-max-height: 50px;
+}
+.color-palette{
+    -fx-max-height: 50px;
+    -fx-border-color: darkgrey;
+    -fx-border-radius: 16px;
+    -fx-background-color: #17202A;
+}
+.color-palette > .hyperlink{
+    -fx-opacity: 0;
+    -fx-cursor: default;
+}
+.color-palette > .separator{
+    -fx-opacity: 0;
+}
+.color-palette {
+    -fx-background-color: #17202A;
+}
+.custom-color-dialog{
+    -fx-opacity: 0;
+}
+.text{
+    -fx-text-fill: #d3d3d3;
+}

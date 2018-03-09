@@ -1,0 +1,49 @@
+.pane{
+	-fx-background-color: #17202A;
+}
+.label{
+	-fx-text-fill: white;
+}
+.rec{
+	-fx-background-color: #846ce7;
+}
+.button {
+	-fx-background-color: #6ee3c7;
+	-fx-text-fill: #17202A;
+	-fx-background-radius: 16px;
+	-fx-border-radius: 16px;
+	-fx-border-color: #6ee3c7;
+	-fx-border-width: 1px;
+}
+.button:hover{
+	-fx-background-color: #95e3c4;
+	-fx-border-radius: 16px;
+	-fx-border-color: white;
+	-fx-border-width: 1px;
+}
+.button:pressed{
+	-fx-background-color: #17202A;
+	-fx-text-fill: white;
+	-fx-border-color: white;
+	-fx-border-radius: 16px;
+	-fx-border-width: 1px;
+}
+.text{
+  	-fx-text-fill: lightgrey;
+}
+.dialog{
+	-fx-padding: 15px;
+	-fx-background-color: white;
+	-fx-border-color: darkgrey;
+	-fx-border-width: 1px;
+	-fx-border-radius: 10px;
+
+}
+
+.dialog > .text-field{
+	-fx-background-color: white;
+	-fx-text-fill: #17202A;
+	-fx-font-size: 15px;
+	-fx-border-width: 0px;
+	-fx-padding: 5px;
+}

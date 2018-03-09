@@ -1,0 +1,6 @@
+.idea/*
+out/*
+.DS_Store
+lifx.iml
+LIFX Application.iml
+lifx-macos.iml

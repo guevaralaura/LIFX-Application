@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,24 +18,19 @@
   <children>
     <AnchorPane fx:id="pane" maxHeight="-1.0" maxWidth="-1.0" VBox.vgrow="ALWAYS">
          <children>
-            <Separator layoutX="17.0" layoutY="301.0" prefHeight="2.0" prefWidth="460.0" />
+            <Separator layoutX="17.0" layoutY="310.0" prefHeight="2.0" prefWidth="460.0" AnchorPane.bottomAnchor="237.0" AnchorPane.rightAnchor="23.0" />
                   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#705bd0" height="70.0" stroke="BLACK" strokeType="INSIDE" styleClass="rec" width="500.0" />
-            <Label alignment="CENTER" layoutX="17.0" layoutY="83.0" prefHeight="21.0" prefWidth="460.0" style="-fx-text-fill: white;" text="Lights">
+            <Label fx:id="lightsLabel" alignment="CENTER" layoutX="17.0" layoutY="83.0" prefHeight="21.0" prefWidth="460.0" styleClass="text" text="Lights">
                <font>
-                  <Font name="3ds-Light" size="18.0" />
+                  <Font size="17.0" url="@../fonts/3ds Light.ttf" />
                </font>
             </Label>
             
-                  <Label alignment="CENTER" layoutX="20.0" layoutY="320.0" prefHeight="21.0" prefWidth="460.0" style="-fx-text-fill: white;" text="Scenes">
+            <Label fx:id="scenesLabel" alignment="CENTER" layoutX="20.0" layoutY="327.0" prefHeight="21.0" prefWidth="460.0" styleClass="text" text="Scenes">
                <font>
-                  <Font name="3ds-Light" size="18.0" />
+                  <Font size="17.0" url="@../fonts/3ds Light.ttf" />
                </font>
             </Label>
-            
-                  <Button fx:id="settingsBtn" layoutX="301.0" layoutY="135.0" mnemonicParsing="false" onAction="#handleSettings" text="Settings">
-               <font>
-                  <Font name="3ds-Light" size="15.0" />
-               </font></Button>
             <Circle fx:id="sceneOneClr" fill="#ff5959" layoutX="99.0" layoutY="436.0" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -46,16 +43,43 @@
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor></Circle>
-            <Label layoutX="24.0" layoutY="15.0" text="LIFX">
+            <Label fx:id="topLabel" layoutX="24.0" layoutY="15.0" text="LIFX">
                <font>
-                  <Font name="3ds-Light" size="36.0" />
+                  <Font size="32.0" url="@../fonts/3ds Light.ttf" />
                </font>
             </Label>
-            <ImageView fitHeight="44.0" fitWidth="69.0" layoutX="428.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="powerAllDown" fitWidth="50.0" layoutY="220.0" preserveRatio="true" visible="false" AnchorPane.rightAnchor="30.0">
                <image>
-                  <Image url="@../../settings.png" />
+                  <Image url="@../icons/powerall_down.png" />
                </image>
             </ImageView>
+            <ImageView fx:id="powerAllHover" fitWidth="50.0" layoutY="220.0" preserveRatio="true" visible="false" AnchorPane.rightAnchor="30.0">
+               <image>
+                  <Image url="@../icons/powerall_hover.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="powerAllUp" fitWidth="50.0" layoutY="220.0" preserveRatio="true" visible="false" AnchorPane.rightAnchor="30.0">
+               <image>
+                  <Image url="@../icons/powerall.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="settingsDown" fitWidth="50.0" layoutY="10.0" preserveRatio="true" AnchorPane.rightAnchor="30.0">
+               <image>
+                  <Image url="@../icons/gear_down.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="settingsHover" fitWidth="50.0" layoutY="10.0" preserveRatio="true" AnchorPane.rightAnchor="30.0">
+               <image>
+                  <Image url="@../icons/gear_hover.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="settingsUp" fitWidth="50.0" layoutY="10.0" preserveRatio="true" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
+               <image>
+                  <Image url="@../icons/gear.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="powerAllBtn" layoutX="420.0" layoutY="220.0" mnemonicParsing="false" onAction="#handlePowerAllBtn" prefHeight="50.0" prefWidth="50.0" visible="false" AnchorPane.rightAnchor="30.0" />
+            <Button fx:id="settingsBtn" layoutX="430.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#handleSettings" onMouseEntered="#handleSettingsHover" onMousePressed="#handleSettingsPressed" prefHeight="50.0" prefWidth="50.0" style="-fx-background-radius: 5em; -fx-border-width: 0; -fx-background-color: transparent;" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0" />
          </children>
     </AnchorPane>
   </children>

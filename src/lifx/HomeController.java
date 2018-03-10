@@ -56,6 +56,12 @@ public class HomeController implements Initializable {
     private DialogPane settingsDialog;
     @FXML
     private TextField tokenField;
+    @FXML
+    private AnchorPane lightsPane;
+    @FXML
+    private ScrollPane lightsScrollPane;
+    @FXML
+    private AnchorPane scenesPane;
 
     private List<LightController> lightsUI = new ArrayList();
 
@@ -125,6 +131,17 @@ public class HomeController implements Initializable {
         //add sign in for lifx and get key
     }
 
+    @FXML
+    void handleSwipeLeft(MouseEvent event) throws IOException {
+        System.out.println("left");
+    }
+
+    @FXML
+    void handleSwipeRight(MouseEvent event) throws IOException {
+        System.out.println("right");
+    }
+
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -133,8 +150,12 @@ public class HomeController implements Initializable {
             e.printStackTrace();
         }
         getLightsList();
+
         int total = lightsList.size();
-        double x = 34;
+        if(total>3){
+            lightsScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        }
+        double x = 20;
         for (int i = 0; i < total; i++) {
             currentId = i;
             createLightUI(x);
@@ -151,8 +172,8 @@ public class HomeController implements Initializable {
         LightController lightItem = new LightController();
         lightItem.setLayoutX(x);
         lightItem.setId(String.valueOf(currentId));
-        lightItem.setLayoutY(124);
-        pane.getChildren().addAll(lightItem);
+        lightItem.setLayoutY(1);
+        lightsPane.getChildren().addAll(lightItem);
         lightsUI.add(lightItem);
     }
 
@@ -168,44 +189,4 @@ public class HomeController implements Initializable {
             stage.setAlwaysOnTop(true);
         }
     }
-
-    /*getting token input: try{
-        token = new String(Files.readAllBytes(Paths.get("token.dat")));
-    } catch (IOException e) {
-        TextInputDialog in = new TextInputDialog();
-        in.setTitle("Settings");
-        in.setHeaderText("Your Token");
-        in.setContentText("Please enter your token:");
-
-        // Traditional way to get the response value.
-        Optional<String> result = in.showAndWait();
-        if (result.isPresent()){
-        token = result.get();
-    }
-
-     <DialogPane fx:id="settingsDialog" expanded="false" layoutX="86.0" layoutY="151.0" prefHeight="113.0" prefWidth="360.0" styleClass="dialog">
-               <header>
-                  <Label contentDisplay="TEXT_ONLY" prefHeight="37.0" prefWidth="328.0" text="Your Token:">
-                     <font>
-                        <Font size="17.0" url="@../fonts/3ds Light.ttf" />
-                     </font>
-                  </Label>
-               </header>
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-               </graphic>
-               <content>
-                  <TextField prefHeight="26.0" prefWidth="328.0" promptText="Token">
-                     <font>
-                        <Font size="12.0" url="@../fonts/3ds Light.ttf" />
-                     </font>
-                  </TextField>
-               </content>
-               <buttonTypes>
-                  <ButtonType fx:constant="APPLY" />
-               </buttonTypes>
-            </DialogPane>
-        */
-
-
 }

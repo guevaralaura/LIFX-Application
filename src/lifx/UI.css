@@ -47,3 +47,24 @@
 	-fx-border-width: 0px;
 	-fx-padding: 5px;
 }
+
+.scroll-pane:armed{
+	outline: none;
+}
+
+.scroll-pane > .scroll-bar > .thumb{
+	-fx-background-color: #846ce7;
+    -fx-background-radius: 1em;
+}
+
+.scroll-pane > .scroll-bar {
+	-fx-background-color: #17202A;
+    -fx-pref-height: 10px;
+}
+
+.scroll-bar >.decrement-button > .decrement-arrow {
+	 -fx-opacity: 0;
+ }
+.scroll-bar >.increment-button > .increment-arrow {
+	-fx-opacity: 0;
+}

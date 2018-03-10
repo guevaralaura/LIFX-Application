@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonType?>
-<?import javafx.scene.control.DialogPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,50 +13,56 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<VBox fillWidth="false" maxHeight="550.0" maxWidth="500.0" minHeight="550.0" minWidth="500.0" prefHeight="550.0" prefWidth="500.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lifx.HomeController">
+<VBox fillWidth="false" maxHeight="550.0" maxWidth="500.0" minHeight="550.0" minWidth="500.0" prefHeight="550.0" prefWidth="500.0" styleClass="pane" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lifx.HomeController">
   <children>
-    <AnchorPane fx:id="pane" maxHeight="-1.0" maxWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane fx:id="pane" maxHeight="-1.0" maxWidth="-Infinity" prefHeight="550.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
          <children>
-            <Separator layoutX="17.0" layoutY="310.0" prefHeight="2.0" prefWidth="460.0" AnchorPane.bottomAnchor="237.0" AnchorPane.rightAnchor="23.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#705bd0" height="70.0" stroke="BLACK" strokeType="INSIDE" styleClass="rec" width="500.0" />
-            <Label fx:id="lightsLabel" alignment="CENTER" layoutX="17.0" layoutY="83.0" prefHeight="21.0" prefWidth="460.0" styleClass="text" text="Lights">
+            <Separator layoutX="17.0" layoutY="318.0" prefHeight="2.0" prefWidth="460.0" AnchorPane.bottomAnchor="229.0" AnchorPane.leftAnchor="17.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="318.0" />
+                  <Rectangle arcWidth="5.0" fill="#705bd0" height="70.0" layoutY="-1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" styleClass="rec" width="500.0" />
+            <Label fx:id="lightsLabel" alignment="CENTER" layoutX="17.0" layoutY="79.0" prefHeight="21.0" prefWidth="460.0" styleClass="text" text="Lights">
                <font>
                   <Font size="17.0" url="@../fonts/3ds Light.ttf" />
                </font>
             </Label>
             
-            <Label fx:id="scenesLabel" alignment="CENTER" layoutX="20.0" layoutY="327.0" prefHeight="21.0" prefWidth="460.0" styleClass="text" text="Scenes">
+            <Label fx:id="scenesLabel" alignment="CENTER" layoutX="20.0" layoutY="324.0" prefHeight="21.0" prefWidth="460.0" styleClass="text" text="Scenes">
                <font>
                   <Font size="17.0" url="@../fonts/3ds Light.ttf" />
                </font>
             </Label>
-            <Circle fx:id="sceneOneClr" fill="#ff5959" layoutX="99.0" layoutY="436.0" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Circle>
-            <Circle fx:id="sceneTwoClr" fill="#57fcff" layoutX="250.0" layoutY="436.0" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Circle>
-            <Circle fx:id="sceneThreeClr" fill="#ff59d3" layoutX="399.0" layoutY="436.0" onDragDetected="#handleScene" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Circle>
+            <ScrollPane hbarPolicy="ALWAYS" layoutX="15.0" layoutY="351.0" prefHeight="165.0" prefWidth="470.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER" AnchorPane.bottomAnchor="34.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="351.0">
+               <content>
+                  <AnchorPane fx:id="scenesPane" minHeight="0.0" minWidth="0.0" prefHeight="170.0" prefWidth="595.0" styleClass="pane">
+                     <children>
+                        <Circle fx:id="sceneThreeClr" fill="#ff59d3" layoutX="78.0" layoutY="65.0" onDragDetected="#handleScene" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0" AnchorPane.topAnchor="20.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fx:id="sceneOneClr" fill="#ff5959" layoutX="225.0" layoutY="85.0" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0" AnchorPane.topAnchor="20.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fx:id="sceneTwoClr" fill="#57fcff" layoutX="369.0" layoutY="85.0" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0" AnchorPane.topAnchor="20.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                        <Circle fx:id="sceneTwoClr1" fill="#5ff215" layoutX="513.0" layoutY="71.0" onMouseClicked="#handleScene" radius="51.0" stroke="#fffbfb" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="0.0">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Circle>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
             <Label fx:id="topLabel" layoutX="24.0" layoutY="15.0" text="LIFX">
                <font>
                   <Font size="32.0" url="@../fonts/3ds Light.ttf" />
                </font>
             </Label>
-            <ImageView fx:id="powerAllDown" fitWidth="50.0" layoutY="220.0" preserveRatio="true" visible="false" AnchorPane.rightAnchor="30.0">
-               <image>
-                  <Image url="@../icons/powerall_down.png" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="powerAllHover" fitWidth="50.0" layoutY="220.0" preserveRatio="true" visible="false" AnchorPane.rightAnchor="30.0">
-               <image>
-                  <Image url="@../icons/powerall_hover.png" />
-               </image>
-            </ImageView>
             <ImageView fx:id="powerAllUp" fitWidth="50.0" layoutY="220.0" preserveRatio="true" visible="false" AnchorPane.rightAnchor="30.0">
                <image>
                   <Image url="@../icons/powerall.png" />
@@ -78,8 +83,23 @@
                   <Image url="@../icons/gear.png" />
                </image>
             </ImageView>
-            <Button fx:id="powerAllBtn" layoutX="420.0" layoutY="220.0" mnemonicParsing="false" onAction="#handlePowerAllBtn" prefHeight="50.0" prefWidth="50.0" visible="false" AnchorPane.rightAnchor="30.0" />
-            <Button fx:id="settingsBtn" layoutX="430.0" layoutY="254.0" mnemonicParsing="false" onMouseClicked="#handleSettings" onMouseEntered="#handleSettingsHover" onMousePressed="#handleSettingsPressed" prefHeight="50.0" prefWidth="50.0" style="-fx-background-radius: 5em; -fx-border-width: 0; -fx-background-color: transparent;" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0" />
+            <ImageView fx:id="powerAllDown" fitWidth="50.0" layoutX="353.0" layoutY="10.0" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../icons/powerall_down.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="powerAllHover" fitWidth="50.0" layoutX="353.0" layoutY="10.0" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../icons/powerall_hover.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="settingsBtn" layoutX="353.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#handleSettings" onMouseEntered="#handleSettingsHover" onMousePressed="#handleSettingsPressed" prefHeight="50.0" prefWidth="50.0" style="-fx-background-radius: 5em; -fx-border-width: 0; -fx-background-color: transparent;" />
+            <Button fx:id="powerAllBtn" mnemonicParsing="false" onAction="#handlePowerAllBtn" prefHeight="50.0" prefWidth="50.0" visible="false" AnchorPane.rightAnchor="30.0" />
+            <ScrollPane fx:id="lightsScrollPane" hbarPolicy="NEVER" layoutX="24.0" layoutY="122.0" prefHeight="184.0" prefWidth="446.0" style="-fx-background-color: transparent;" vbarPolicy="NEVER" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="30.0">
+               <content>
+                  <AnchorPane fx:id="lightsPane" minHeight="0.0" minWidth="0.0" prefHeight="184.0" prefWidth="595.0" styleClass="pane" />
+               </content>
+            </ScrollPane>
          </children>
     </AnchorPane>
   </children>

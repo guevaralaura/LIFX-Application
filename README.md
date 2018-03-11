@@ -1,4 +1,4 @@
-# Timesheet Calculator
+# LIFX Desktop Application
 
 JavaFX Application with Python back end functionality that uses the LIFX API to control smart lightbulbs. The graphical interface allows users to change light colors, toggle on/off, and set scenes
 
